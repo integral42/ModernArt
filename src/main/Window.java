@@ -71,15 +71,6 @@ public class Window extends JFrame{
                 new Person(i, j, Math.random() * 12, randomColor(new Random()),Teams.NONE, 10, 10, this);
             }
         }
-        /*
-        new Person(100, 100, 3, Teams.NONE, this);
-        new Person(100, 200, 25, Color.MAGENTA, Teams.NONE, 10, 10, this);
-        new Person(100, 300, 20, Color.RED, Teams.NONE, 10, 10, this);S
-        new Person(200, 100, 2, Color.BLUE, Teams.NONE, 10, 10, this);
-        new Person(200, 200, 8, Color.GREEN, Teams.NONE, 10, 10, this);
-        new Person(200, 300, 15, Color.ORANGE, Teams.NONE, 10, 10, this);
-        */
-   
     }
     
     /**
@@ -101,7 +92,7 @@ public class Window extends JFrame{
             	r.move();
             	rectangles.forEach(r1 -> r.collide(r1));
             	if(keysPressed.get(MyKeyListener.VK_LEFT)){
-            		System.out.println("Helllo");
+            		System.out.println("Hello");
             		r.grow();
             	}
             	if(keysPressed.get(MyKeyListener.VK_RIGHT)){
