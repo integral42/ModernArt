@@ -45,8 +45,7 @@ public class Window extends JFrame{
     	window.run();
     }
     /**
-     * Does all main code
-     * Has game loop
+     * Contructs all other objects
      */
     public Window() {
         super();
@@ -91,11 +90,11 @@ public class Window extends JFrame{
             	r.bounce();
             	r.move();
             	rectangles.forEach(r1 -> r.collide(r1));
-            	if(keysPressed.get(MyKeyListener.VK_LEFT)){
+            	if(keysPressed.get(MyKeyListener.LEFT)){
             		System.out.println("Hello");
             		r.grow();
             	}
-            	if(keysPressed.get(MyKeyListener.VK_RIGHT)){
+            	if(keysPressed.get(MyKeyListener.RIGHT)){
             		r.shrink();
             	}
             });
