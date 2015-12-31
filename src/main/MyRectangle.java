@@ -8,19 +8,19 @@ import java.awt.Color;
 public class MyRectangle{
     double x, y;
     double length, width;
-/**
-* x and y directions movement after 1 time unit
-*/
-double[] directions = new double[2];
+   /**
+ 	* x and y directions movement after 1 time unit
+	*/
+    double[] directions = new double[2];
     Color color;
     /**
      * Used for adding of object to the array-list in main
      */
-    Main location;
+    Window location;
     /**
      * Used for convertToComponets
      */
-double[] xandy = new double[2];
+    double[] xandy = new double[2];
     
     /**
      * Forms Basis of all other constructors
@@ -35,11 +35,11 @@ double[] xandy = new double[2];
         this.width = width;
         this.length = length;
     }
-/**
+    /**
      * "Default"
      * @param p_1
      */
-    public MyRectangle(Main p_1){
+    public MyRectangle(Window p_1){
         this(50, 50, 10, 10);
 
         directions[0] = 0;
@@ -59,7 +59,7 @@ double[] xandy = new double[2];
      * @param color
      * @param p_1
      */
-    public MyRectangle(double x, double y, double size, Color color, Main p_1){
+    public MyRectangle(double x, double y, double size, Color color, Window p_1){
         this(x, y, size, size);
         
         directions[0] = 0;
@@ -80,7 +80,7 @@ double[] xandy = new double[2];
      * @param dirY
      * @param p_1
      */
-    public MyRectangle(double x, double y, double size, Color color, double dirX, double dirY, Main p_1){
+    public MyRectangle(double x, double y, double size, Color color, double dirX, double dirY, Window p_1){
         this(x, y, size, color, p_1);
                 
         directions[0] = dirX;
@@ -114,26 +114,21 @@ double[] xandy = new double[2];
         //Bottom Left
             if(x + width >= myRect.x && x + width <= myRect.x + (myRect.width / 2)
                && y + length >= myRect.y && y + length <= myRect.y + (myRect.length / 2)){
-               massCollision(myRect);
-               System.out.println("1");
             }
             //Top Right
             if(x <= myRect.x + myRect.width && x + (width / 2) >= myRect.x + myRect.width
                && y <= myRect.y + myRect.length && y + (length / 2) >= myRect.y + myRect.length){
                 massCollision(myRect);
-                System.out.println("2");
             }
             //Bottom Right
             if(x <= myRect.x + myRect.width && x + (width / 2) >= myRect.x + myRect.width
                && y + length >= myRect.y && y + length <= myRect.y + (myRect.length / 2)){
                 massCollision(myRect);
-                System.out.println("3");
             }
             //Top Left
             if(x + width >= myRect.x && x + width <= myRect.x + (myRect.width / 2)
                && y <= myRect.y + myRect.length && y + (length / 2) >= myRect.y + myRect.length){
                 massCollision(myRect);
-                System.out.println("4");
             }
         }
     }
@@ -161,14 +156,25 @@ double[] xandy = new double[2];
     }
     /**
      * Physics Approved Collision
+     * not yet, sorry
      */
     private void massCollision(MyRectangle myRect){
-    //directions[0] = -((length * width * directions[0] + myRect.length * myRect.width * myRect.directions[0])/(length * width + myRect.length * myRect.width));
-    //directions[1] = -((length * width * directions[1] + myRect.length * myRect.width * myRect.directions[1])/(length * width + myRect.length * myRect.width));
-    //directions[0] = -(directions[0] + myRect.directions[0])/2;
-    //directions[1] = -(directions[1] + myRect.directions[1])/2;
     directions[0] = -directions[0];
     directions[1] = -directions[1];
+    }
+    /**
+     * Increases Width and Length by 1
+     */
+    public void grow(){
+    	width++;
+    	length++;
+    }
+    /**
+     * Decreases Width and Length by 1
+     */
+    public void shrink(){
+    	width--;
+    	length--;
     }
 }
 

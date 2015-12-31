@@ -4,17 +4,19 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import enums.Teams;
+import listening.MyKeyListener;
 /**
  * Main Class: all main code
  * @author Connor Lehmacher
  */
 @SuppressWarnings("serial")
-public class Main extends JFrame{     
+public class Window extends JFrame{     
     //Important for base drawing
     final int FRAME_X = 770;
     final int FRAME_Y = 600;
@@ -26,8 +28,9 @@ public class Main extends JFrame{
     private Image photo;
     private Graphics dbg;
     //Timer timer;
-    boolean firstdelay = true;
    
+    MyKeyListener mKL;
+    ArrayList<Boolean> keysPressed;
     ArrayList<MyRectangle> rectangles;
     ArrayList<Person> people;
     
@@ -36,7 +39,8 @@ public class Main extends JFrame{
      * @param args
      */
     public static void main(String[] args) {
-    	Main window = new Main();
+    	MyKeyListener.fillKeys();
+    	Window window = new Window();
     	SwingUtilities.invokeLater(() -> window.setVisible(true));
     	window.run();
     }
@@ -44,7 +48,7 @@ public class Main extends JFrame{
      * Does all main code
      * Has game loop
      */
-    public Main() {
+    public Window() {
         super();
         
         //timer = new Timer(10, this);
@@ -55,13 +59,16 @@ public class Main extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setBackground(new Color(10, 10, 10));
-        rectangles = new ArrayList<>();
+        
+        mKL = new MyKeyListener();
+        keysPressed = new ArrayList<Boolean>();
+        rectangles = new ArrayList<MyRectangle>();
         //people! - Non-permanent part of code
         people = new ArrayList<Person>();
             
-        for(int a = CONTENT[0] ; a <= CONTENT[2] ; a += 50){
-            for(int b = CONTENT[1] ; b <= CONTENT[3] ; b += 50){
-                new Person(a, b, Math.random() * 12, new Color((float)Math.random(), (float)Math.random(), (float)Math.random()),Teams.NONE, 10, 10, this);
+        for(int i = CONTENT[0] ; i <= CONTENT[2] ; i += 50){
+            for(int j = CONTENT[1] ; j <= CONTENT[3] ; j += 50){
+                new Person(i, j, Math.random() * 12, randomColor(new Random()),Teams.NONE, 10, 10, this);
             }
         }
         /*
@@ -76,15 +83,30 @@ public class Main extends JFrame{
     }
     
     /**
+     * Generates a new random color using random source r.
+     */
+    private Color randomColor(Random r) {
+    	return new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
+    }
+    
+    /**
      * Let the program run.  Never returns!
      */
     public void run() {
         while(true){
+        	keysPressed = mKL.getKeysPressed();
             //Moving
             rectangles.forEach(r -> {
-            r.bounce();
-            r.move();
-            rectangles.forEach(r1 -> r.collide(r1));
+            	r.bounce();
+            	r.move();
+            	rectangles.forEach(r1 -> r.collide(r1));
+            	if(keysPressed.get(MyKeyListener.VK_LEFT)){
+            		System.out.println("Helllo");
+            		r.grow();
+            	}
+            	if(keysPressed.get(MyKeyListener.VK_RIGHT)){
+            		r.shrink();
+            	}
             });
             people.forEach(p -> p.wander());
             try {
@@ -111,16 +133,7 @@ public class Main extends JFrame{
      * @param g
      */
     public void paintComponent(Graphics g)
-    {
-        //Delay
-        if(firstdelay){
-            try{
-                Thread.sleep(100);
-            } 
-            catch (InterruptedException e){}
-            firstdelay = false;
-        }
-        
+    {   
         //Draws all the rectangles
         for (MyRectangle myRect : rectangles) {
             g.setColor(myRect.color);

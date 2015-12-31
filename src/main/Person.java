@@ -39,12 +39,13 @@ public class Person extends MyRectangle {
      * @param attack
      * @param p_1
      */
-    public Person(double x, double y, double size, Color color, Teams team, double health, double attack, Main p_1){
+    public Person(double x, double y, double size, Color color, Teams team, double health, double attack, Window p_1){
         super(x, y, size, color, p_1);
         this.team = team;
         this.health = health;
         
         location.addToPeople(this);
+        //Arbitrary Amount
         level = 3;
     }   
     /**
@@ -55,17 +56,15 @@ public class Person extends MyRectangle {
      * @param team
      * @param p_1
      */
-    public Person(double x, double y, double level, Teams team, Main p_1){
+    public Person(double x, double y, double level, Teams team, Window p_1){
         this(x, y, (level + 9), team.getColor(), team, (level + 10), attackValue(team, level), p_1);
     }
     /**
      * Moves the player in random directions
      */
     public void wander(){
+    	//TODO make this system more efficient
         if(Math.random() < 0.004 || idea){
-            //Random random = new Random();
-            //plan[0] = random.nextInt(location.CONTENT[2] - location.CONTENT[0] + 1) + location.CONTENT[0];
-            //plan[1] = random.nextInt(location.CONTENT[3] - location.CONTENT[1] + 1) + location.CONTENT[1];
             directions = convertToComponents(1.7, Math.random() * Math.PI * 2);
             idea = false;
         }
