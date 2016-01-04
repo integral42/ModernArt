@@ -36,7 +36,6 @@ public class Window extends JFrame{
     
     /**
      * Main Method
-     * @param args
      */
     public static void main(String[] args) {
     	MyKeyListener.fillKeys();
@@ -50,9 +49,6 @@ public class Window extends JFrame{
     public Window() {
         super();
         
-        //timer = new Timer(10, this);
-        //timer.setInitialDelay(40); 
-        
         //Set up how the frame works
         setSize(FRAME_X , FRAME_Y); //Golden Ratio -ish Makes the rectangle look nice
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,14 +56,15 @@ public class Window extends JFrame{
         setBackground(new Color(10, 10, 10));
         
         mKL = new MyKeyListener();
+        addKeyListener(mKL);
+        
         keysPressed = new ArrayList<Boolean>();
         rectangles = new ArrayList<MyRectangle>();
-        //people! - Non-permanent part of code
         people = new ArrayList<Person>();
             
         for(int i = CONTENT[0] ; i <= CONTENT[2] ; i += 50){
             for(int j = CONTENT[1] ; j <= CONTENT[3] ; j += 50){
-                new Person(i, j, Math.random() * 12, randomColor(new Random()),Teams.NONE, 10, 10, this);
+                new Person(i, j, Math.random() * 12, randomColor(new Random()),Teams.NONE, 10, this);
             }
         }
     }
@@ -87,14 +84,13 @@ public class Window extends JFrame{
         	keysPressed = mKL.getKeysPressed();
             //Moving
             rectangles.forEach(r -> {
-            	r.bounce();
+            	r.edgeBounce();
             	r.move();
             	rectangles.forEach(r1 -> r.collide(r1));
-            	if(keysPressed.get(MyKeyListener.LEFT)){
-            		System.out.println("Hello");
+            	if(keysPressed.get(MyKeyListener.UP)){
             		r.grow();
             	}
-            	if(keysPressed.get(MyKeyListener.RIGHT)){
+            	if(keysPressed.get(MyKeyListener.DOWN)){
             		r.shrink();
             	}
             });
@@ -108,7 +104,6 @@ public class Window extends JFrame{
     
     /**
      * Double buffering
-     * @param g
      */
     @Override
     public void paint(Graphics g){
@@ -120,7 +115,6 @@ public class Window extends JFrame{
     /**
      * paint loop
      * draws rectangles/people
-     * @param g
      */
     public void paintComponent(Graphics g)
     {   
@@ -133,17 +127,17 @@ public class Window extends JFrame{
     }  
     /**
      * adds MyRectangle objects to rectangles
-     * @param myRect
      */
     public void addToRectangles(MyRectangle myRect){
         rectangles.add(myRect);
     }
     /**
      * adds Person objects to People
-     * @param person
      */
     public void addToPeople(Person person){
         people.add(person);
     }
 }
+
+
 

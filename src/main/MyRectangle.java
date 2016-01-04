@@ -8,10 +8,15 @@ import java.awt.Color;
 public class MyRectangle{
     double x, y;
     double length, width;
-   /**
- 	* x and y directions movement after 1 time unit
-	*/
-    double[] directions = new double[2];
+    double mass;
+    /**
+ 	 * Some Vector in component form for Velocity
+	 */
+    double[] velocity = new double[2];
+    /**
+     * Some Vector in component form for Acceleration
+     */
+    double[] acceleration = new double[2];
     Color color;
     /**
      * Used for adding of object to the array-list in main
@@ -24,46 +29,23 @@ public class MyRectangle{
     
     /**
      * Forms Basis of all other constructors
-     * @param x
-     * @param y
-     * @param length
-     * @param width
      */
     public MyRectangle(double x, double y, double length, double width){
         this.x = x;
         this.y = y;
         this.width = width;
         this.length = length;
+        mass = width*length;
+        velocity[0] = 0;
+        velocity[1] = 0;
+        acceleration[0] = 0;
+        acceleration[1] = 0;
     }
-    /**
-     * "Default"
-     * @param p_1
-     */
-    public MyRectangle(Window p_1){
-        this(50, 50, 10, 10);
-
-        directions[0] = 0;
-        directions[1] = 0;
-        
-        color = Color.BLACK;
-        
-        location = p_1;
-        p_1.addToRectangles(this);
-    }
-    
     /**
      * No Motion
-     * @param x
-     * @param y
-     * @param size
-     * @param color
-     * @param p_1
      */
     public MyRectangle(double x, double y, double size, Color color, Window p_1){
         this(x, y, size, size);
-        
-        directions[0] = 0;
-        directions[1] = 0;
         
         this.color = color;
         
@@ -72,32 +54,25 @@ public class MyRectangle{
     }
     /**
      * Fully Operational
-     * @param x
-     * @param y
-     * @param size
-     * @param color
-     * @param dirX
-     * @param dirY
-     * @param p_1
      */
     public MyRectangle(double x, double y, double size, Color color, double dirX, double dirY, Window p_1){
         this(x, y, size, color, p_1);
                 
-        directions[0] = dirX;
-        directions[1] = dirY;
+        velocity[0] = dirX;
+        velocity[1] = dirY;
     }
     /**
-     * Moves in x and y they become some amount more or less based on directions
+     * Acts upon distance based on velocity and velocity based on acceleration
      */
     public void move(){
-        x += directions[0];
-        y += directions[1];
+        x += velocity[0];
+        y += velocity[1];
+        velocity[0] += acceleration[0];
+        velocity[1] += acceleration[1];
     }
+
     /**
      * Convert some magnitude and angle(Rad) into components
-     * @param mag
-     * @param theta
-     * @return 
      */
     public double[] convertToComponents(double mag, double theta){
     //0 = x, 1 = y
@@ -107,11 +82,10 @@ public class MyRectangle{
     }
     /**
      * collision between rectangles
-     * @param myRect
      */
     public void collide(MyRectangle myRect){
         if(myRect != this){
-        //Bottom Left
+        	//Bottom Left
             if(x + width >= myRect.x && x + width <= myRect.x + (myRect.width / 2)
                && y + length >= myRect.y && y + length <= myRect.y + (myRect.length / 2)){
             }
@@ -135,22 +109,22 @@ public class MyRectangle{
     /**
      * edge collision
      */
-    public void bounce(){    
+    public void edgeBounce(){    
         if(x<location.CONTENT[0]){
-            directions[0] = -directions[0];
+            velocity[0] = -velocity[0];
             x = location.CONTENT[0];   
         } 
         if(y<location.CONTENT[1]){
-            directions[1] = -directions[1];
+            velocity[1] = -velocity[1];
             y = location.CONTENT[1];   
         }        
         if(x + length>location.CONTENT[2]){
-            directions[0] = -directions[0];
+            velocity[0] = -velocity[0];
             x = location.CONTENT[2] - length;
         }
         
         if(y + width>location.CONTENT[3]){
-            directions[1] = -directions[1];
+            velocity[1] = -velocity[1];
             y = location.CONTENT[3] - width;
         }
     }
@@ -159,8 +133,15 @@ public class MyRectangle{
      * not yet, sorry
      */
     private void massCollision(MyRectangle myRect){
-    directions[0] = -directions[0];
-    directions[1] = -directions[1];
+    	velocity[0] = -velocity[0];
+    	velocity[1] = -velocity[1];
+    }
+    /**
+     * find c in pythagorean theorem
+     */
+    public double pythagorate(double[] legs){
+    	double c = Math.sqrt(legs[0] * legs[0] + legs[1] * legs[1]);
+    	return c;
     }
     /**
      * Increases Width and Length by 1
@@ -175,6 +156,14 @@ public class MyRectangle{
     public void shrink(){
     	width--;
     	length--;
+    }
+    /**
+     * Physics-Gravity
+     */
+    public void gravity(MyRectangle myRect){
+    	if(this != myRect){
+    		
+    	}
     }
 }
 

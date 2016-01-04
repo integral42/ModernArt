@@ -11,45 +11,25 @@ import java.util.ArrayList;
  */
 public class MyKeyListener implements KeyListener{
 	/**
-	 * all the keys to be tested
-	 */
-	static ArrayList<Integer> keys = new ArrayList<Integer>();
-	/**
 	 * which keys are currently pressed down
 	 */
 	ArrayList<Boolean> keysPressed = new ArrayList<Boolean>();
 	
 	/**
-	 * Default Constructor makes keysPressed get as many falses as in the length keys
+	 * Default Constructor makes keysPressed get as many falses as in the length keys	
 	 */
 	public MyKeyListener(){
 		super();
 		for(int i = 0; i < keys.size(); i++){
 			keysPressed.add(false);
-			System.out.println(2);
 		}
-	}
-    /**
-     * Adds keys to be tested to "keys"
-     */
-	public static void fillKeys(){
-		keys.add(KeyEvent.VK_SPACE);
-		keys.add(KeyEvent.VK_LEFT);
-		keys.add(KeyEvent.VK_RIGHT);
-		System.out.println(1);
 	}
 	
     @Override
     public void keyPressed(KeyEvent e){
-    	System.out.println(3);
-    	if(e.getKeyCode() == KeyEvent.VK_UP){
-    		System.out.println(3.5);
-    	}
         for(int i = 0; i < keys.size(); i++){
-        	System.out.println(4);
         	if(e.getKeyCode() == keys.get(i)){
         		keysPressed.set(i, true);
-        		System.out.println(5);
         	}
         }
     }
@@ -65,14 +45,33 @@ public class MyKeyListener implements KeyListener{
     public void keyTyped(KeyEvent e){}
     /**
      * passes the keyPressed information
-     * @return
      */
     public ArrayList<Boolean> getKeysPressed(){
         return keysPressed;
     }
     
+    
+    
+    //----------STATIC------------
+    
+	/**
+	 * all the keys to be tested
+	 */
+	static ArrayList<Integer> keys = new ArrayList<Integer>();
     // MARK: Static
     public static final int SPACE = 0;
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
+    public static final int UP = 3;
+    public static final int DOWN = 4;
+    /**
+     * Adds keys to be tested to "keys"
+     */
+	public static void fillKeys(){
+		keys.add(KeyEvent.VK_SPACE);
+		keys.add(KeyEvent.VK_LEFT);
+		keys.add(KeyEvent.VK_RIGHT);
+		keys.add(KeyEvent.VK_UP);
+		keys.add(KeyEvent.VK_DOWN);
+	}
 }
