@@ -20,12 +20,13 @@ public class MyKeyListener implements KeyListener{
 	ArrayList<Boolean> keysPressed = new ArrayList<Boolean>();
 	
 	/**
-	 * Default Constructor makes keysPressed get as many falses as in the length keys	
+	 * Default Constructor makes keysPressed get as many falses as in the length keys
 	 */
 	public MyKeyListener(){
 		super();
 		for(int i = 0; i < keys.size(); i++){
 			keysPressed.add(false);
+			System.out.println(2);
 		}
 	}
     /**
@@ -35,13 +36,20 @@ public class MyKeyListener implements KeyListener{
 		keys.add(KeyEvent.VK_SPACE);
 		keys.add(KeyEvent.VK_LEFT);
 		keys.add(KeyEvent.VK_RIGHT);
+		System.out.println(1);
 	}
 	
     @Override
     public void keyPressed(KeyEvent e){
+    	System.out.println(3);
+    	if(e.getKeyCode() == KeyEvent.VK_UP){
+    		System.out.println(3.5);
+    	}
         for(int i = 0; i < keys.size(); i++){
+        	System.out.println(4);
         	if(e.getKeyCode() == keys.get(i)){
         		keysPressed.set(i, true);
+        		System.out.println(5);
         	}
         }
     }
@@ -64,10 +72,7 @@ public class MyKeyListener implements KeyListener{
     }
     
     // MARK: Static
-    public static final int VK_SPACE = 0;
-    public static final int VK_LEFT = 1;
-    public static final int VK_RIGHT = 2;
-    
-    
-    
+    public static final int SPACE = 0;
+    public static final int LEFT = 1;
+    public static final int RIGHT = 2;
 }
