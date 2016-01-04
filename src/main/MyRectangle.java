@@ -22,10 +22,6 @@ public class MyRectangle{
      * Used for adding of object to the array-list in main
      */
     Window location;
-    /**
-     * Used for convertToComponets
-     */
-    double[] xandy = new double[2];
     
     /**
      * Forms Basis of all other constructors
@@ -61,6 +57,7 @@ public class MyRectangle{
         velocity[0] = dirX;
         velocity[1] = dirY;
     }
+    
     /**
      * Acts upon distance based on velocity and velocity based on acceleration
      */
@@ -69,16 +66,6 @@ public class MyRectangle{
         y += velocity[1];
         velocity[0] += acceleration[0];
         velocity[1] += acceleration[1];
-    }
-
-    /**
-     * Convert some magnitude and angle(Rad) into components
-     */
-    public double[] convertToComponents(double mag, double theta){
-    //0 = x, 1 = y
-    xandy[0] = mag * Math.cos(theta);
-    xandy[1] = mag * Math.sin(theta);
-    return xandy;
     }
     /**
      * collision between rectangles
@@ -107,6 +94,14 @@ public class MyRectangle{
         }
     }
     /**
+     * Physics Approved Collision
+     * not yet, sorry
+     */
+    private void massCollision(MyRectangle myRect){
+    	velocity[0] = -velocity[0];
+    	velocity[1] = -velocity[1];
+    }
+    /**
      * edge collision
      */
     public void edgeBounce(){    
@@ -129,21 +124,6 @@ public class MyRectangle{
         }
     }
     /**
-     * Physics Approved Collision
-     * not yet, sorry
-     */
-    private void massCollision(MyRectangle myRect){
-    	velocity[0] = -velocity[0];
-    	velocity[1] = -velocity[1];
-    }
-    /**
-     * find c in pythagorean theorem
-     */
-    public double pythagorate(double[] legs){
-    	double c = Math.sqrt(legs[0] * legs[0] + legs[1] * legs[1]);
-    	return c;
-    }
-    /**
      * Increases Width and Length by 1
      */
     public void grow(){
@@ -158,12 +138,36 @@ public class MyRectangle{
     	length--;
     }
     /**
-     * Physics-Gravity
+     * Physics-Gravity for any 2 bodies with mass and distance
      */
     public void gravity(MyRectangle myRect){
     	if(this != myRect){
     		
     	}
+    }
+    
+    //---------------------Vector/Math Utility--------------------
+    /**
+     * Convert some magnitude and angle(Rad) into components
+     */
+    public double[] convertToComponents(double mag, double theta){
+    //0 = x, 1 = y
+    double[] xandy = new double[2];
+    xandy[0] = mag * Math.cos(theta);
+    xandy[1] = mag * Math.sin(theta);
+    return xandy;
+    }
+    /**
+     * find c in pythagorean theorem
+     */
+    public double pythagorate(double[] legs){
+    	return Math.sqrt(legs[0] * legs[0] + legs[1] * legs[1]);
+    }
+    /**
+     * Distance formula between two rectangular points
+     */
+    public double distance(double x1, double y1, double x2, double y2) {
+    	return Math.sqrt(x1 - x2);
     }
 }
 

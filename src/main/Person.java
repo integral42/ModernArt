@@ -25,6 +25,9 @@ public class Person extends MyRectangle {
      * Can be used to generate a size, attack and health
      */
     double level;
+    /**
+     * Makes Person initially move
+     */
     boolean idea = true;
     
     /**
@@ -49,11 +52,11 @@ public class Person extends MyRectangle {
      * Moves the player in random directions
      */
     public void wander(){
-    	//TODO make this system more efficient
     	if(idea){
             velocity = convertToComponents(1.7, Math.random() * Math.PI * 2);
             idea = false;
     	}
+    	//Random Direction
         if(Math.random() < 0.004){
             velocity = convertToComponents(pythagorate(velocity), Math.random() * Math.PI * 2);
         }
