@@ -1,6 +1,7 @@
 package main;
-
+//TODO
 public class Vector {
+	//----------FIELDS----------//
 	/**
 	 * Basic Information
 	 */
@@ -13,9 +14,9 @@ public class Vector {
 		this.y = y;
 	}
 	
-	//------------Methods----------------//
+	//--------------Methods----------------//
     /**
-     * Convert some magnitude and angle(Rad) into components
+     * Creates a vector based on polar form
      */
     public static Vector createFromPolar(double mag, double theta){
     	final double x = mag * Math.cos(theta);
@@ -24,28 +25,30 @@ public class Vector {
     }
     
     /**
-     * 
+     * Creates a vector based on rectangular form
      */
     public static Vector createFromRect(double x, double y) {
     	return new Vector(x, y);
     }
-    
+    //TODO
     /**
      * find c in pythagorean theorem
      */
     public double norm(double[] legs){
     	return Math.sqrt(legs[0] * legs[0] + legs[1] * legs[1]);
     }
-    
-    /**
-     * Distance formula between two rectangular points
-     */
-    public double distance(double x1, double y1, double x2, double y2) {
-    	return Math.sqrt(x1 - x2);
-    }
+
     
     public double theta() {
     	//Compute theta
     	return 0.;
+    }
+    //-----------------STATIC------------//
+    /**
+     * Distance formula between vectors
+     */
+    //TODO
+    public double distance(double x1, double y1, double x2, double y2) {
+    	return Math.sqrt(x1 - x2);
     }
 }
