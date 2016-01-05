@@ -17,17 +17,20 @@ import listening.MyKeyListener;
  */
 @SuppressWarnings("serial")
 public class Window extends JFrame{     
-    //Important for base drawing
-    final int FRAME_X = 770;
-    final int FRAME_Y = 600;
+	//-------------Fields--------------//
+    /** Initial Size of the frame */
+    final static int FRAME_X = 770;
+    final static int FRAME_Y = 600;
     /**	
      * The size of the usable frame
      * 0:x1 1:y1 2:y1 3:y2
      */
     final static int[] CONTENT = new int[]{4, 25, 766, 597};
+    //Double Buffering
     private Image photo;
     private Graphics dbg;
-    //Timer timer;
+    
+    static Window window;
    
     MyKeyListener mKL;
     ArrayList<Boolean> keysPressed;
@@ -39,10 +42,11 @@ public class Window extends JFrame{
      */
     public static void main(String[] args) {
     	MyKeyListener.fillKeys();
-    	Window window = new Window();
+    	window = new Window();
     	SwingUtilities.invokeLater(() -> window.setVisible(true));
     	window.run();
     }
+    
     /**
      * Constructs all other objects
      */
@@ -52,8 +56,8 @@ public class Window extends JFrame{
         //Set up how the frame works
         setSize(FRAME_X , FRAME_Y); //Golden Ratio -ish Makes the rectangle look nice
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
         setBackground(new Color(10, 10, 10));
+        getContentPane();
         
         mKL = new MyKeyListener();
         addKeyListener(mKL);
@@ -107,7 +111,7 @@ public class Window extends JFrame{
      */
     @Override
     public void paint(Graphics g) {
-        photo = createImage(FRAME_X, FRAME_Y);
+        photo = createImage(window.getContentPane().getSize().width, window.getContentPane().getSize().height);
         dbg = photo.getGraphics();
         paintComponent(dbg);
         g.drawImage(photo, 0, 0, this);
@@ -120,7 +124,9 @@ public class Window extends JFrame{
         //Draws all the rectangles
         for (MyRectangle mR : rectangles) {
             g.setColor(mR.color);
-            g.drawRect((int)mR.location.x, (int)mR.location.y, (int)mR.length, (int)mR.width);
+            final int realX, realY, realWidth, realHeight;
+            //TODO add this stuff to draw rect
+            g.drawRect((int)mR.position.x, (int)mR.position.y, (int)mR.length, (int)mR.width);
         }
         repaint();
     }  
