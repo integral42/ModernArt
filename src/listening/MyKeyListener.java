@@ -10,11 +10,13 @@ import java.util.ArrayList;
  * @author Connor Lehmacher
  */
 public class MyKeyListener implements KeyListener{
+	//----------Fields----------//
 	/**
 	 * which keys are currently pressed down
 	 */
 	ArrayList<Boolean> keysPressed = new ArrayList<Boolean>();
 	
+	//---------Constructors---------//
 	/**
 	 * Default Constructor makes keysPressed get as many falses as in the length keys	
 	 */
@@ -25,6 +27,7 @@ public class MyKeyListener implements KeyListener{
 		}
 	}
 	
+	//-----------Methods-----------//
     @Override
     public void keyPressed(KeyEvent e){
         for(int i = 0; i < keys.size(); i++){
@@ -33,6 +36,7 @@ public class MyKeyListener implements KeyListener{
         	}
         }
     }
+    
     @Override
     public void keyReleased(KeyEvent e){
     	for(int i = 0; i < keys.size(); i++){
@@ -41,8 +45,10 @@ public class MyKeyListener implements KeyListener{
         	}
         }
     }
+    
     @Override
     public void keyTyped(KeyEvent e){}
+    
     /**
      * passes the keyPressed information
      */
@@ -52,13 +58,13 @@ public class MyKeyListener implements KeyListener{
     
     
     
-    //----------STATIC------------
+    //----------STATIC------------//
     
 	/**
 	 * all the keys to be tested
 	 */
 	static ArrayList<Integer> keys = new ArrayList<Integer>();
-    // MARK: Static
+    // MARKS
     public static final int SPACE = 0;
     public static final int LEFT = 1;
     public static final int RIGHT = 2;

@@ -1,24 +1,44 @@
 package main;
 //TODO
 public class Vector {
-	//----------FIELDS----------//
-	/**
-	 * Basic Information
-	 */
-	double x;
-	double y;
+	//----------Fields----------//
+	// xBasic Information
+	public double x;
+	public double y;
 	
 	//------------Constructors------------//
-	private Vector(double x, double y){
+	private Vector(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * Default; 0s
+	 */
+	public Vector() {
+		x = 0;
+		y = 0;
+	}
+	
 	//--------------Methods----------------//
+    /**
+     * find the size of a vector
+     */
+    public double norm() {
+    	return Math.sqrt(Util.sq(x) + Util.sq(y));
+    }
+    
+    /**
+     * Find the angle of a vector
+     */
+    public double theta() {
+    	return Math.atan2(y, x);
+    }
+    //-----------------STATIC------------//
     /**
      * Creates a vector based on polar form
      */
-    public static Vector createFromPolar(double mag, double theta){
+    public static Vector createFromPolar(double mag, double theta) {
     	final double x = mag * Math.cos(theta);
     	final double y = mag * Math.sin(theta);
     	return new Vector(x, y);
@@ -30,25 +50,11 @@ public class Vector {
     public static Vector createFromRect(double x, double y) {
     	return new Vector(x, y);
     }
-    //TODO
-    /**
-     * find c in pythagorean theorem
-     */
-    public double norm(double[] legs){
-    	return Math.sqrt(legs[0] * legs[0] + legs[1] * legs[1]);
-    }
-
     
-    public double theta() {
-    	//Compute theta
-    	return 0.;
-    }
-    //-----------------STATIC------------//
     /**
      * Distance formula between vectors
      */
-    //TODO
-    public double distance(double x1, double y1, double x2, double y2) {
-    	return Math.sqrt(x1 - x2);
+    public double distance(Vector v1, Vector v2) {
+    	return Math.sqrt(Util.sq(v1.x - v2.x) + Util.sq(v1.y - v2.y));
     }
 }
