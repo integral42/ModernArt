@@ -24,7 +24,7 @@ public class Window extends JFrame{
      * The size of the usable frame
      * 0:x1 1:y1 2:y1 3:y2
      */
-    final int[] CONTENT = new int[]{4, 25, 766, 597};
+    final static int[] CONTENT = new int[]{4, 25, 766, 597};
     private Image photo;
     private Graphics dbg;
     //Timer timer;
@@ -44,7 +44,7 @@ public class Window extends JFrame{
     	window.run();
     }
     /**
-     * Contructs all other objects
+     * Constructs all other objects
      */
     public Window() {
         super();
@@ -64,7 +64,7 @@ public class Window extends JFrame{
             
         for(int i = CONTENT[0] ; i <= CONTENT[2] ; i += 50){
             for(int j = CONTENT[1] ; j <= CONTENT[3] ; j += 50){
-                new Person(i, j, Math.random() * 12, randomColor(new Random()),Teams.NONE, 10, this);
+                new Person(Vector.createFromRect(i, j), Math.random() * 12, randomColor(new Random()),Teams.NONE, 10, this);
             }
         }
     }
@@ -96,9 +96,9 @@ public class Window extends JFrame{
             });
             people.forEach(p -> p.wander());
             try {
-                Thread.sleep(10);
+                Thread.sleep(10);    
             } 
-            catch (InterruptedException e) {}
+            catch(InterruptedException iE) {}
         }
     }
     
@@ -106,7 +106,7 @@ public class Window extends JFrame{
      * Double buffering
      */
     @Override
-    public void paint(Graphics g){
+    public void paint(Graphics g) {
         photo = createImage(FRAME_X, FRAME_Y);
         dbg = photo.getGraphics();
         paintComponent(dbg);
@@ -116,12 +116,11 @@ public class Window extends JFrame{
      * paint loop
      * draws rectangles/people
      */
-    public void paintComponent(Graphics g)
-    {   
+    public void paintComponent(Graphics g) {   
         //Draws all the rectangles
-        for (MyRectangle myRect : rectangles) {
-            g.setColor(myRect.color);
-            g.drawRect((int)myRect.x, (int)myRect.y, (int)myRect.length, (int)myRect.width);
+        for (MyRectangle mR : rectangles) {
+            g.setColor(mR.color);
+            g.drawRect((int)mR.location.x, (int)mR.location.y, (int)mR.length, (int)mR.width);
         }
         repaint();
     }  
