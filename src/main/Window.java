@@ -18,9 +18,17 @@ import listening.MyKeyListener;
 @SuppressWarnings("serial")
 public class Window extends JFrame{     
 	//-------------Fields--------------//
-    /** Initial Size of the frame */
-    final static int FRAME_X = 500;
-    final static int FRAME_Y = 500;
+    /** Initial Size of the frame: X */
+    final static int FRAME_X = 700;
+    /** Initial Size of the frame: Y */
+    final static int FRAME_Y = 700;
+    /** Padding for window size: X
+     * ElCapitan: 0, Windows7: 7  */   
+    final static int PADDING_X = 7;
+    /** Padding for window size: Y
+     * ElCapitan: 23, Windows7: 30  */ 
+    final static int PADDING_Y = 30;
+    
     //Double Buffering
     private Image photo;
     private Graphics dbg;
@@ -102,7 +110,7 @@ public class Window extends JFrame{
      */
     @Override
     public void paint(Graphics g) {
-        photo = createImage(this.getContentPane().getWidth(), this.getContentPane().getHeight() + 23);
+        photo = createImage(this.getContentPane().getWidth() + 8, this.getContentPane().getHeight() + 30);
         dbg = photo.getGraphics();
         paintComponent(dbg);
         g.drawImage(photo, 0, 0, this);
@@ -115,8 +123,8 @@ public class Window extends JFrame{
         //Draws all the rectangles
         for (MyRectangle mR : rectangles) {
             g.setColor(mR.color);
-            final int realX =  (int)(this.getContentPane().getWidth() * mR.position.x);
-            final int realY =  (int)(this.getContentPane().getHeight() * mR. position.y + 23);
+            final int realX =  (int)(this.getContentPane().getWidth() * mR.position.x + 8);
+            final int realY =  (int)(this.getContentPane().getHeight() * mR. position.y + 30);
             final int realWidth =  (int)(this.getContentPane().getWidth() * mR.width);
             final int realHeight =  (int)(this.getContentPane().getHeight() * mR.height);
             g.drawRect(realX, realY, realWidth, realHeight);
