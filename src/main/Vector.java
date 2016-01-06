@@ -2,7 +2,7 @@ package main;
 
 public class Vector {
 	//----------Fields----------//
-	// xBasic Information
+	// Ze Basic Information   
 	public double x;
 	public double y;
 	

@@ -102,7 +102,7 @@ public class Window extends JFrame{
      */
     @Override
     public void paint(Graphics g) {
-        photo = createImage(this.getContentPane().getWidth(), this.getContentPane().getHeight() + 20);
+        photo = createImage(this.getContentPane().getWidth(), this.getContentPane().getHeight() + 23);
         dbg = photo.getGraphics();
         paintComponent(dbg);
         g.drawImage(photo, 0, 0, this);
@@ -116,23 +116,25 @@ public class Window extends JFrame{
         for (MyRectangle mR : rectangles) {
             g.setColor(mR.color);
             final int realX =  (int)(this.getContentPane().getWidth() * mR.position.x);
-            final int realY =  (int)(this.getContentPane().getHeight() * mR. position.y);
+            final int realY =  (int)(this.getContentPane().getHeight() * mR. position.y + 23);
             final int realWidth =  (int)(this.getContentPane().getWidth() * mR.width);
             final int realHeight =  (int)(this.getContentPane().getHeight() * mR.height);
             g.drawRect(realX, realY, realWidth, realHeight);
         }
         repaint();
     }  
+    
     /**
      * adds MyRectangle objects to rectangles
      */
-    public void addToRectangles(MyRectangle myRect){
+    public void addToRectangles(MyRectangle myRect) {
         rectangles.add(myRect);
     }
+    
     /**
      * adds Person objects to People
      */
-    public void addToPeople(Person person){
+    public void addToPeople(Person person) {
         people.add(person);
     }
 }

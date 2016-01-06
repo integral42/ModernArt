@@ -64,7 +64,7 @@ public class MyKeyListener implements KeyListener{
 	 * all the keys to be tested
 	 */
 	static ArrayList<Integer> keys = new ArrayList<Integer>();
-    // MARKS
+    //Marks
     public static final int SPACE = 0;
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
