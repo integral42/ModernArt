@@ -1,5 +1,5 @@
 package main;
-//TODO
+
 public class Vector {
 	//----------Fields----------//
 	// xBasic Information
@@ -34,6 +34,18 @@ public class Vector {
     public double theta() {
     	return Math.atan2(y, x);
     }
+    
+    /**
+     * Distance formula between two vectors
+     */
+    public double distanceWith(Vector v) {
+    	return Math.sqrt(Util.sq(x - v.x) + Util.sq(y - v.y));
+    }
+    
+    /** Angle between two vectors */
+    public double angleWith(Vector v) {
+    	return Math.acos((x * v.x + y * v.y)/(norm() * v.norm()));
+    }
     //-----------------STATIC------------//
     /**
      * Creates a vector based on polar form
@@ -49,12 +61,5 @@ public class Vector {
      */
     public static Vector createFromRect(double x, double y) {
     	return new Vector(x, y);
-    }
-    
-    /**
-     * Distance formula between vectors
-     */
-    public double distance(Vector v1, Vector v2) {
-    	return Math.sqrt(Util.sq(v1.x - v2.x) + Util.sq(v1.y - v2.y));
     }
 }

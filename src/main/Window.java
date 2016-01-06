@@ -25,7 +25,7 @@ public class Window extends JFrame{
     private Image photo;
     private Graphics dbg;
    
-    MyKeyListener mKL;
+    MyKeyListener m;
     ArrayList<Boolean> keysPressed;
     ArrayList<MyRectangle> rectangles;
     ArrayList<Person> people;
@@ -46,12 +46,12 @@ public class Window extends JFrame{
         super();
         
         //Set up how the frame works
-        setSize(FRAME_X , FRAME_Y); //Golden Ratio -ish Makes the rectangle look nice
+        setSize(FRAME_X , FRAME_Y);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(new Color(10, 10, 10));
         
-        mKL = new MyKeyListener();
-        addKeyListener(mKL);
+        m = new MyKeyListener();
+        addKeyListener(m);
         
         keysPressed = new ArrayList<Boolean>();
         rectangles = new ArrayList<MyRectangle>();
@@ -76,7 +76,7 @@ public class Window extends JFrame{
      */
     public void run() {
         while(true){
-        	keysPressed = mKL.getKeysPressed();
+        	keysPressed = m.getKeysPressed();
             //Moving
             rectangles.forEach(r -> {
             	r.edgeBounce();
@@ -93,7 +93,7 @@ public class Window extends JFrame{
             try {
                 Thread.sleep(10);    
             } 
-            catch(InterruptedException iE) {}
+            catch(InterruptedException e) {}
         }
     }
     

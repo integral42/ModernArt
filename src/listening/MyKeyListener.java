@@ -20,8 +20,8 @@ public class MyKeyListener implements KeyListener{
 	/**
 	 * Default Constructor makes keysPressed get as many falses as in the length keys	
 	 */
-	public MyKeyListener(){
-		super();
+	public MyKeyListener() {
+		super(); 
 		for(int i = 0; i < keys.size(); i++){
 			keysPressed.add(false);
 		}
@@ -29,7 +29,7 @@ public class MyKeyListener implements KeyListener{
 	
 	//-----------Methods-----------//
     @Override
-    public void keyPressed(KeyEvent e){
+    public void keyPressed(KeyEvent e) {
         for(int i = 0; i < keys.size(); i++){
         	if(e.getKeyCode() == keys.get(i)){
         		keysPressed.set(i, true);
@@ -38,7 +38,7 @@ public class MyKeyListener implements KeyListener{
     }
     
     @Override
-    public void keyReleased(KeyEvent e){
+    public void keyReleased(KeyEvent e) {
     	for(int i = 0; i < keys.size(); i++){
         	if(e.getKeyCode() == keys.get(i)){
         		keysPressed.set(i, false);
@@ -47,12 +47,12 @@ public class MyKeyListener implements KeyListener{
     }
     
     @Override
-    public void keyTyped(KeyEvent e){}
+    public void keyTyped(KeyEvent e) {}
     
     /**
      * passes the keyPressed information
      */
-    public ArrayList<Boolean> getKeysPressed(){
+    public ArrayList<Boolean> getKeysPressed() {
         return keysPressed;
     }
     
@@ -70,10 +70,11 @@ public class MyKeyListener implements KeyListener{
     public static final int RIGHT = 2;
     public static final int UP = 3;
     public static final int DOWN = 4;
+    
     /**
      * Adds keys to be tested to "keys"
      */
-	public static void fillKeys(){
+	static {
 		keys.add(KeyEvent.VK_SPACE);
 		keys.add(KeyEvent.VK_LEFT);
 		keys.add(KeyEvent.VK_RIGHT);

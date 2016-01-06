@@ -7,8 +7,8 @@ import java.awt.Color;
  */
 public class MyRectangle{
 	//-----------Fields-----------//
-    Vector location;
-    double length, width;
+    Vector position;
+    double width, height;
     double mass;
     /**
  	 * Some Vector in component form for Velocity
@@ -27,12 +27,12 @@ public class MyRectangle{
     /**
      * Forms Basis of all other constructors
      */
-    public MyRectangle(Vector location, double length, double width){
-        this.location = location;
+    public MyRectangle(Vector position, double width, double height){
+        this.position = position;
         this.width = width;
-        this.length = length;
+        this.height = height;
         
-        mass = width * length;
+        mass = width * height;
         velocity = new Vector();
         acceleration = new Vector();
     }
@@ -40,19 +40,19 @@ public class MyRectangle{
     /**
      * No Motion with color and place
      */
-    public MyRectangle(Vector location, double size, Color color, Window place){
-        this(location, size, size);
+    public MyRectangle(Vector position, double size, Color color, Window location){
+        this(position, size, size);
         
         this.color = color;
         
-        place.addToRectangles(this);
+        location.addToRectangles(this);
     }
     
     /**
      * Fully Operational
      */
-    public MyRectangle(Vector location, double size, Color color, Vector velocity, Window p_1){
-        this(location, size, color, p_1);
+    public MyRectangle(Vector position, double size, Color color, Vector velocity, Window location){
+        this(position, size, color, location);
                 
         this.velocity = velocity;
     }
@@ -62,8 +62,8 @@ public class MyRectangle{
      * Acts upon distance based on velocity and velocity based on acceleration
      */
     public void move() {
-        location.x += velocity.x;
-        location.y += velocity.y;
+        position.x += velocity.x;
+        position.y += velocity.y;
         velocity.x += acceleration.x;
         velocity.y += acceleration.y;
     }
@@ -73,25 +73,25 @@ public class MyRectangle{
     public void collide(MyRectangle mR) {
         if(mR != this){
             if(           		/*Bottom Left*/
-            		location.x + width >= mR.location.x &&
-            		location.x + width <= mR.location.x + (mR.width / 2) &&
-                	location.y + length >= mR.location.y &&
-               		location.y + length <= mR.location.y + (mR.length / 2)
+            		position.x + width >= mR.position.x &&
+            		position.x + width <= mR.position.x + (mR.width / 2) &&
+                	position.y + width >= mR.position.y &&
+               		position.y + width <= mR.position.y + (mR.width / 2)
                	||				/*Top Right*/
-               		location.x <= mR.location.x + mR.width &&
-               		location.x + (width / 2) >= mR.location.x + mR.width &&
-        			location.y <= mR.location.y + mR.length &&
-        			location.y + (length / 2) >= mR.location.y + mR.length	
+               		position.x <= mR.position.x + mR.width &&
+               		position.x + (width / 2) >= mR.position.x + mR.width &&
+        			position.y <= mR.position.y + mR.width &&
+        			position.y + (width / 2) >= mR.position.y + mR.width	
             	||				/*Bottom Right*/
-        		(location.x <= mR.location.x + mR.width &&
-                	location.x + (width / 2) >= mR.location.x + mR.width &&
-                	location.y + length >= mR.location.y &&
-                   	location.y + length <= mR.location.y + (mR.length / 2))
+        		(position.x <= mR.position.x + mR.width &&
+                	position.x + (width / 2) >= mR.position.x + mR.width &&
+                	position.y + width >= mR.position.y &&
+                   	position.y + width <= mR.position.y + (mR.width / 2))
                 ||				/*Top Left*/
-                (location.x + width >= mR.location.x &&
-                	location.x + width <= mR.location.x + (mR.width / 2) &&
-                	location.y <= mR.location.y + mR.length &&
-                	location.y + (length / 2) >= mR.location.y + mR.length)
+                (position.x + width >= mR.position.x &&
+                	position.x + width <= mR.position.x + (mR.width / 2) &&
+                	position.y <= mR.position.y + mR.width &&
+                	position.y + (width / 2) >= mR.position.y + mR.width)
             		) {
             	velocity.x = -velocity.x;
             	velocity.y = -velocity.y;
@@ -103,40 +103,40 @@ public class MyRectangle{
      * edge collision
      */
     public void edgeBounce(){    
-        if(location.x < Window.CONTENT[0]){
+        if(position.x < 0){
         	velocity.x = -velocity.x;
-            location.x = Window.CONTENT[0];   
+            position.x = 0;   
         } 
-        if(location.y < Window.CONTENT[1]){
+        if(position.y < 0){
         	velocity.y = -velocity.y;
-        	location.y = Window.CONTENT[1];   
+        	position.y = 0;   
         }        
-        if(location.x + length > Window.CONTENT[2]){
+        if(position.x + width > 1){
         	velocity.x = -velocity.x;
-        	location.x = Window.CONTENT[2] - length;
+        	position.x = 1 - width;
         }
         
-        if(location.y + width > Window.CONTENT[3]){
+        if(position.y + width > 1){
         	velocity.y = -velocity.y;
-        	location.y = Window.CONTENT[3] - width;
+        	position.y = 1 - width;
         }
     }
     /**
      * Increases Width and Length by 1
      */
     public void grow(){
-    	width++;
-    	length++;
-    	mass = width * length;
+    	width += 0.01;
+    	height += 0.01;
+    	mass = width * height;
     	
     }
     /**
      * Decreases Width and Length by 1
      */
     public void shrink(){
-    	width--;
-    	length--;
-    	mass = width * length;
+    	width -= 0.01;
+    	height -= 0.01;
+    	mass = width * height;
     }
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
