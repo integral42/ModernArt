@@ -10,18 +10,12 @@ public class MyRectangle{
     Vector position;
     double width, height;
     double mass;
-    /**
- 	 * Some Vector in component form for Velocity
-	 */
+    /**  Some Vector in component form for Velocity */
     Vector velocity;
-    /**
-     * Some Vector in component form for Acceleration
-     */
+    /**  Some Vector in component form for Acceleration */
     Vector acceleration;
     Color color;
-    /**
-     * Used for adding of object to the array-list in main
-     */
+    /** Used for adding of object to the array-list in main */
     
     //----------Constructors-----------//
     /**
@@ -57,7 +51,7 @@ public class MyRectangle{
         this.velocity = velocity;
     }
     
-    //-----------Methods----------//
+    //------------------------Methods----------------------//
     /**
      * Acts upon distance based on velocity and velocity based on acceleration
      */
@@ -70,7 +64,7 @@ public class MyRectangle{
     /**
      * collision between rectangles
      */
-    public void collide(MyRectangle mR) {
+    public void collideWith(MyRectangle mR) {
         if(mR != this){
             if(           		/*Bottom Left*/
             		position.x + width >= mR.position.x &&
@@ -102,49 +96,54 @@ public class MyRectangle{
     /**
      * edge collision
      */
-    public void edgeBounce(){    
-        if(position.x < 0){
+    public void edgeBounce() {    
+        if(position.x < 0) {
         	velocity.x = -velocity.x;
             position.x = 0;   
         } 
-        if(position.y < 0){
+        if(position.y < 0) {
         	velocity.y = -velocity.y;
         	position.y = 0;   
         }        
-        if(position.x + width > 1){
+        if(position.x + width > 1) {
         	velocity.x = -velocity.x;
         	position.x = 1 - width;
         }
         
-        if(position.y + width > 1){
+        if(position.y + width > 1) {
         	velocity.y = -velocity.y;
         	position.y = 1 - width;
         }
     }
+    
     /**
      * Increases Width and Length by 1
      */
-    public void grow(){
-    	width += 0.01;
-    	height += 0.01;
+    public void grow() {
+    	width += 0.00015;
+    	height += 0.00015;
     	mass = width * height;
     	
     }
+    
     /**
      * Decreases Width and Length by 1
      */
-    public void shrink(){
-    	width -= 0.01;
-    	height -= 0.01;
+    public void shrink() {
+    	width -= 0.00015;
+    	height -= 0.00015;
     	mass = width * height;
     }
+    
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
      */
-    public void gravity(MyRectangle myRect){
+    public void gravity(MyRectangle myRect) {
     	if(this != myRect){
-    		//TODO
+    		
     	}
     }
+    
+    
 }
 

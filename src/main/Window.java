@@ -89,7 +89,7 @@ public class Window extends JFrame{
             rectangles.forEach(r -> {
             	r.edgeBounce();
             	r.move();
-            	rectangles.forEach(r1 -> r.collide(r1));
+            	rectangles.forEach(r1 -> r.collideWith(r1));
             	if(keysPressed.get(MyKeyListener.UP)){
             		r.grow();
             	}
@@ -98,10 +98,6 @@ public class Window extends JFrame{
             	}
             });
             people.forEach(p -> p.wander());
-            try {
-                Thread.sleep(10);    
-            } 
-            catch(InterruptedException e) {}
         }
     }
     
