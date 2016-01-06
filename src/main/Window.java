@@ -19,18 +19,11 @@ import listening.MyKeyListener;
 public class Window extends JFrame{     
 	//-------------Fields--------------//
     /** Initial Size of the frame */
-    final static int FRAME_X = 770;
-    final static int FRAME_Y = 600;
-    /**	
-     * The size of the usable frame
-     * 0:x1 1:y1 2:y1 3:y2
-     */
-    final static int[] CONTENT = new int[]{4, 25, 766, 597};
+    final static int FRAME_X = 500;
+    final static int FRAME_Y = 500;
     //Double Buffering
-    private Image photo;
-    private Graphics dbg;
-    
-    static Window window;
+    //private Image photo;
+    //private Graphics dbg;
    
     MyKeyListener mKL;
     ArrayList<Boolean> keysPressed;
@@ -41,14 +34,13 @@ public class Window extends JFrame{
      * Main Method
      */
     public static void main(String[] args) {
-    	MyKeyListener.fillKeys();
-    	window = new Window();
+    	Window window = new Window();
     	SwingUtilities.invokeLater(() -> window.setVisible(true));
     	window.run();
     }
     
     /**
-     * Constructs all other objects
+     * Makes Frame Makes objects
      */
     public Window() {
         super();
@@ -57,7 +49,6 @@ public class Window extends JFrame{
         setSize(FRAME_X , FRAME_Y); //Golden Ratio -ish Makes the rectangle look nice
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(new Color(10, 10, 10));
-        getContentPane();
         
         mKL = new MyKeyListener();
         addKeyListener(mKL);
@@ -65,10 +56,11 @@ public class Window extends JFrame{
         keysPressed = new ArrayList<Boolean>();
         rectangles = new ArrayList<MyRectangle>();
         people = new ArrayList<Person>();
-            
-        for(int i = CONTENT[0] ; i <= CONTENT[2] ; i += 50){
-            for(int j = CONTENT[1] ; j <= CONTENT[3] ; j += 50){
-                new Person(Vector.createFromRect(i, j), Math.random() * 12, randomColor(new Random()),Teams.NONE, 10, this);
+        
+        for(double i = 0 ; i <= 1 ; i += 0.1){
+            for(double j = 0 ; j <= 1 ; j += 0.1){
+                //System.out.println(i + "" + j);
+            	new Person(Vector.createFromRect(i, j), (Math.random() / 50), randomColor(new Random()),Teams.NONE, 10, this);
             }
         }
     }
@@ -106,16 +98,16 @@ public class Window extends JFrame{
         }
     }
     
-    /**
-     * Double buffering
-     */
-    @Override
-    public void paint(Graphics g) {
-        photo = createImage(window.getContentPane().getSize().width, window.getContentPane().getSize().height);
-        dbg = photo.getGraphics();
-        paintComponent(dbg);
-        g.drawImage(photo, 0, 0, this);
-    }
+//    /**
+//     * Double buffering
+//     */
+//    @Override
+//    public void paint(Graphics g) {
+//        photo = createImage(this.getContentPane().getWidth(), this.getContentPane().getHeight() + 20);
+//        dbg = photo.getGraphics();
+//        paintComponent(dbg);
+//        g.drawImage(photo, 0, 0, this);
+//    }
     /**
      * paint loop
      * draws rectangles/people
@@ -124,9 +116,11 @@ public class Window extends JFrame{
         //Draws all the rectangles
         for (MyRectangle mR : rectangles) {
             g.setColor(mR.color);
-            final int realX, realY, realWidth, realHeight;
-            //TODO add this stuff to draw rect
-            g.drawRect((int)mR.position.x, (int)mR.position.y, (int)mR.length, (int)mR.width);
+            final int realX =  (int)(this.getContentPane().getWidth() * mR.position.x);
+            final int realY =  (int)(this.getContentPane().getHeight() * mR. position.y);
+            final int realWidth =  (int)(this.getContentPane().getWidth() * mR.width);
+            final int realHeight =  (int)(this.getContentPane().getHeight() * mR.height);
+            g.drawRect(realX, realY, realWidth, realHeight);
         }
         repaint();
     }  
