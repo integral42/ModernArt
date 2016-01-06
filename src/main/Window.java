@@ -88,7 +88,7 @@ public class Window extends JFrame{
             //Moving
             rectangles.forEach(r -> {
             	r.edgeBounce();
-            	r.move();
+            	r.physics();
             	rectangles.forEach(r1 -> r.collideWith(r1));
             	if(keysPressed.get(MyKeyListener.UP)){
             		r.grow();

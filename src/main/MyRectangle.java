@@ -14,6 +14,8 @@ public class MyRectangle{
     Vector velocity;
     /**  Some Vector in component form for Acceleration */
     Vector acceleration;
+    /**  Some Vector in component form for Acceleration */
+    Vector netForce;
     Color color;
     /** Used for adding of object to the array-list in main */
     
@@ -29,6 +31,7 @@ public class MyRectangle{
         mass = width * height;
         velocity = new Vector();
         acceleration = new Vector();
+        netForce = new Vector();
     }
     
     /**
@@ -55,11 +58,13 @@ public class MyRectangle{
     /**
      * Acts upon distance based on velocity and velocity based on acceleration
      */
-    public void move() {
+    public void physics() {
         position.x += velocity.x;
         position.y += velocity.y;
         velocity.x += acceleration.x;
         velocity.y += acceleration.y;
+        //TODO implement scalar diving
+        //acceleration = netForce / mass;
     }
     /**
      * collision between rectangles
@@ -96,7 +101,7 @@ public class MyRectangle{
     /**
      * edge collision
      */
-    public void edgeBounce() {    
+    public void edgeBounce() {
         if(position.x < 0) {
         	velocity.x = -velocity.x;
             position.x = 0;   
@@ -117,26 +122,27 @@ public class MyRectangle{
     }
     
     /**
-     * Increases Width and Length by 1
+     * Increases Width and Length by some small amount
      */
     public void grow() {
-    	width += 0.00015;
-    	height += 0.00015;
+    	width += epsilon;
+    	height += epsilon;
     	mass = width * height;
     	
     }
     
     /**
-     * Decreases Width and Length by 1
+     * Decreases Width and Length by some small amount
      */
     public void shrink() {
-    	width -= 0.00015;
-    	height -= 0.00015;
+    	width -= epsilon;
+    	height -= epsilon;
     	mass = width * height;
     }
     
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
+     * adds to <b> netForce </b>
      */
     public void gravity(MyRectangle myRect) {
     	if(this != myRect){
@@ -144,6 +150,8 @@ public class MyRectangle{
     	}
     }
     
-    
+    //-------------Static-------------//
+    /** Small amount for growth */
+    private final static double epsilon = 0.00015;
 }
 
