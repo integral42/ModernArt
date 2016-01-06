@@ -22,8 +22,8 @@ public class Window extends JFrame{
     final static int FRAME_X = 500;
     final static int FRAME_Y = 500;
     //Double Buffering
-    //private Image photo;
-    //private Graphics dbg;
+    private Image photo;
+    private Graphics dbg;
    
     MyKeyListener mKL;
     ArrayList<Boolean> keysPressed;
@@ -59,7 +59,6 @@ public class Window extends JFrame{
         
         for(double i = 0 ; i <= 1 ; i += 0.1){
             for(double j = 0 ; j <= 1 ; j += 0.1){
-                //System.out.println(i + "" + j);
             	new Person(Vector.createFromRect(i, j), (Math.random() / 50), randomColor(new Random()),Teams.NONE, 10, this);
             }
         }
@@ -98,16 +97,16 @@ public class Window extends JFrame{
         }
     }
     
-//    /**
-//     * Double buffering
-//     */
-//    @Override
-//    public void paint(Graphics g) {
-//        photo = createImage(this.getContentPane().getWidth(), this.getContentPane().getHeight() + 20);
-//        dbg = photo.getGraphics();
-//        paintComponent(dbg);
-//        g.drawImage(photo, 0, 0, this);
-//    }
+    /**
+     * Double buffering
+     */
+    @Override
+    public void paint(Graphics g) {
+        photo = createImage(this.getContentPane().getWidth(), this.getContentPane().getHeight() + 20);
+        dbg = photo.getGraphics();
+        paintComponent(dbg);
+        g.drawImage(photo, 0, 0, this);
+    }
     /**
      * paint loop
      * draws rectangles/people
