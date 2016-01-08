@@ -46,6 +46,16 @@ public class Vector {
     public double angleWith(Vector v) {
     	return Math.acos((x * v.x + y * v.y)/(norm() * v.norm()));
     }
+    
+    /** Scalar Multiply */
+    public Vector multiplyWith(double a) {
+    	return createFromRect(x * a, y * a);
+    }
+    
+    /** Vector Add */
+    public Vector addWith(Vector v) {
+    	return createFromRect(x + v.x, y + v.y);
+    }
     //-----------------STATIC------------//
     /**
      * Creates a vector based on polar form

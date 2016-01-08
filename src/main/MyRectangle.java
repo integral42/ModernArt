@@ -7,28 +7,37 @@ import java.awt.Color;
  */
 public class MyRectangle{
 	//-----------Fields-----------//
-    Vector position;
-    double width, height;
-    double mass;
-    /**  Some Vector in component form for Velocity */
-    Vector velocity;
-    /**  Some Vector in component form for Acceleration */
-    Vector acceleration;
-    /**  Some Vector in component form for Acceleration */
-    Vector netForce;
-    Color color;
+    //"Original Size" (adjusted by arrows) != 0
+    private double inputWidth, inputHeight;
+    //Same as input* but can be < 0
+    private double virtualWidth, virtualHeight;
+    //Adjusted for screen size but still between 0 and 1
+    private double width, height;
+    private double mass;
+    /** Some Vector in component form for Position (Displacement) */
+    private Vector position;
+    /** Some Vector in component form for Velocity */
+    protected Vector velocity;
+    /** Some Vector in component form for Acceleration */
+    private Vector acceleration;
+    /** Some Vector in component form for Net Force */
+    private Vector netForce;
+    private Color color;
     /** Used for adding of object to the array-list in main */
     
     //----------Constructors-----------//
     /**
      * Forms Basis of all other constructors
      */
-    public MyRectangle(Vector position, double width, double height){
+    public MyRectangle(Vector position, double inputwidth, double inputHeight){
         this.position = position;
-        this.width = width;
-        this.height = height;
+        this.inputWidth = inputwidth;
+        this.inputHeight = inputHeight;
         
-        mass = width * height;
+        mass = inputwidth * inputHeight;
+        virtualWidth = inputWidth;
+        virtualHeight = inputHeight;
+        
         velocity = new Vector();
         acceleration = new Vector();
         netForce = new Vector();
@@ -55,6 +64,14 @@ public class MyRectangle{
     }
     
     //------------------------Methods----------------------//
+    /** Reset Size
+     * @param w the width of the real screen
+     * @param h the height of the real screen */
+    public void readjust(double w, double h) {
+    	width = inputWidth * Window.FRAME_X / w;
+    	height = inputHeight  * Window.FRAME_Y / h;
+    }
+    
     /**
      * Acts upon distance based on velocity and velocity based on acceleration
      */
@@ -63,35 +80,50 @@ public class MyRectangle{
         position.y += velocity.y;
         velocity.x += acceleration.x;
         velocity.y += acceleration.y;
+        mass = width * height;
         //TODO implement scalar diving
         //acceleration = netForce / mass;
+        
+    	if(virtualWidth > 0) {
+    		inputWidth = virtualWidth;
+    	}
+    	else{
+    		inputWidth = 0; 
+    	}
+    	if(virtualHeight > 0) {
+    		inputHeight = virtualHeight;
+    	}
+    	else{
+    		inputHeight = 0;
+    	}
     }
+    
     /**
      * collision between rectangles
      */
     public void collideWith(MyRectangle mR) {
-        if(mR != this){
+        if(mR != this) {
             if(           		/*Bottom Left*/
-            		position.x + width >= mR.position.x &&
+            	(position.x + width >= mR.position.x &&
             		position.x + width <= mR.position.x + (mR.width / 2) &&
-                	position.y + width >= mR.position.y &&
-               		position.y + width <= mR.position.y + (mR.width / 2)
+                	position.y + height >= mR.position.y &&
+               		position.y + height <= mR.position.y + (mR.height / 2))
                	||				/*Top Right*/
-               		position.x <= mR.position.x + mR.width &&
+               	(position.x <= mR.position.x + mR.width &&
                		position.x + (width / 2) >= mR.position.x + mR.width &&
-        			position.y <= mR.position.y + mR.width &&
-        			position.y + (width / 2) >= mR.position.y + mR.width	
+        			position.y <= mR.position.y + mR.height &&
+        			position.y + (height / 2) >= mR.position.y + mR.height)	
             	||				/*Bottom Right*/
         		(position.x <= mR.position.x + mR.width &&
                 	position.x + (width / 2) >= mR.position.x + mR.width &&
-                	position.y + width >= mR.position.y &&
-                   	position.y + width <= mR.position.y + (mR.width / 2))
+                	position.y + height >= mR.position.y &&
+                   	position.y + height <= mR.position.y + (mR.height / 2))
                 ||				/*Top Left*/
                 (position.x + width >= mR.position.x &&
                 	position.x + width <= mR.position.x + (mR.width / 2) &&
-                	position.y <= mR.position.y + mR.width &&
-                	position.y + (width / 2) >= mR.position.y + mR.width)
-            		) {
+                	position.y <= mR.position.y + mR.height &&
+                	position.y + (height / 2) >= mR.position.y + mR.height)
+            																) {
             	velocity.x = -velocity.x;
             	velocity.y = -velocity.y;
             }
@@ -115,29 +147,22 @@ public class MyRectangle{
         	position.x = 1 - width;
         }
         
-        if(position.y + width > 1) {
+        if(position.y + height > 1) {
         	velocity.y = -velocity.y;
-        	position.y = 1 - width;
+        	position.y = 1 - height;
         }
     }
     
-    /**
-     * Increases Width and Length by some small amount
-     */
+    /** Increases Width and Length by some small amount */
     public void grow() {
-    	width += epsilon;
-    	height += epsilon;
-    	mass = width * height;
-    	
+    	virtualWidth += epsilon;
+    	virtualHeight += epsilon;
     }
     
-    /**
-     * Decreases Width and Length by some small amount
-     */
+    /** Decreases Width and Length by some small amount */
     public void shrink() {
-    	width -= epsilon;
-    	height -= epsilon;
-    	mass = width * height;
+        virtualWidth -= epsilon;
+    	virtualHeight -= epsilon;
     }
     
     /**
@@ -148,6 +173,27 @@ public class MyRectangle{
     	if(this != myRect){
     		
     	}
+    }
+    
+    //---------Getter Methods----------//
+    /** Color Passer */
+    public Color getColor(){
+    	return color;
+    }
+    
+    /** Position Passer */
+    public Vector getPosition(){
+    	return position;
+    }
+    
+    /** Width Passer */
+    public double getWidth(){
+    	return width;
+    }
+    	
+    /** Height Passer */
+    public double getHeight(){
+    	return height;
     }
     
     //-------------Static-------------//

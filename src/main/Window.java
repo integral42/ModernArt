@@ -23,8 +23,8 @@ public class Window extends JFrame{
     /** Initial Size of the frame: Y */
     final static int FRAME_Y = 700;
     /** Padding for window size: X
-     * ElCapitan: 0, Windows7: 7  */   
-    final static int PADDING_X = 7;
+     * ElCapitan: 0, Windows7: 8  */   
+    final static int PADDING_X = 8;
     /** Padding for window size: Y
      * ElCapitan: 23, Windows7: 30  */ 
     final static int PADDING_Y = 30;
@@ -89,6 +89,7 @@ public class Window extends JFrame{
             rectangles.forEach(r -> {
             	r.edgeBounce();
             	r.physics();
+            	r.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
             	rectangles.forEach(r1 -> r.collideWith(r1));
             	if(keysPressed.get(MyKeyListener.UP)){
             		r.grow();
@@ -106,7 +107,9 @@ public class Window extends JFrame{
      */
     @Override
     public void paint(Graphics g) {
-        photo = createImage(this.getContentPane().getWidth() + 8, this.getContentPane().getHeight() + 30);
+    	final int frameX =  (int)(this.getContentPane().getWidth() + PADDING_X + 1);
+        final int frameY =  (int)(this.getContentPane().getHeight() + PADDING_Y + 1);
+        photo = createImage(frameX, frameY);
         dbg = photo.getGraphics();
         paintComponent(dbg);
         g.drawImage(photo, 0, 0, this);
@@ -118,11 +121,11 @@ public class Window extends JFrame{
     public void paintComponent(Graphics g) {   
         //Draws all the rectangles
         for (MyRectangle mR : rectangles) {
-            g.setColor(mR.color);
-            final int realX =  (int)(this.getContentPane().getWidth() * mR.position.x + 8);
-            final int realY =  (int)(this.getContentPane().getHeight() * mR. position.y + 30);
-            final int realWidth =  (int)(this.getContentPane().getWidth() * mR.width);
-            final int realHeight =  (int)(this.getContentPane().getHeight() * mR.height);
+            g.setColor(mR.getColor());
+            final int realX =  (int)(this.getContentPane().getWidth() * mR.getPosition().x + PADDING_X);
+            final int realY =  (int)(this.getContentPane().getHeight() * mR.getPosition().y + PADDING_Y);
+            final int realWidth =  (int)(this.getContentPane().getWidth() * mR.getWidth());
+            final int realHeight =  (int)(this.getContentPane().getHeight() * mR.getHeight());
             g.drawRect(realX, realY, realWidth, realHeight);
         }
         repaint();
