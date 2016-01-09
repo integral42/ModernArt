@@ -76,14 +76,19 @@ public class MyRectangle{
      * Acts upon distance based on velocity and velocity based on acceleration
      */
     public void physics() {
-        position.x += velocity.x;
-        position.y += velocity.y;
-        velocity.x += acceleration.x;
-        velocity.y += acceleration.y;
+        position.addWith(velocity);
+        velocity.addWith(acceleration);
         mass = width * height;
-        //TODO implement scalar diving
-        //acceleration = netForce / mass;
+//        System.out.println(mass);
+//        System.out.println(1 / mass);
+//        System.out.println(netForce.x);
+//        System.out.println(acceleration.x);
+//        System.out.println(velocity.x);
+//        System.out.println(position.x);
+//        System.out.println("Buffer");
+//        acceleration = netForce.multiplyWith(1 / mass);
         
+        //Controls Sizes below 0
     	if(virtualWidth > 0) {
     		inputWidth = virtualWidth;
     	}
@@ -198,6 +203,6 @@ public class MyRectangle{
     
     //-------------Static-------------//
     /** Small amount for growth */
-    private final static double epsilon = 0.00015;
+    private final static double epsilon = 0.00001;
 }
 

@@ -60,9 +60,9 @@ public class Vector {
     /**
      * Creates a vector based on polar form
      */
-    public static Vector createFromPolar(double mag, double theta) {
-    	final double x = mag * Math.cos(theta);
-    	final double y = mag * Math.sin(theta);
+    public static Vector createFromPolar(double norm, double theta) {
+    	final double x = norm * Math.cos(theta);
+    	final double y = norm * Math.sin(theta);
     	return new Vector(x, y);
     }
     

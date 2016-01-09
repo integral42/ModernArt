@@ -24,10 +24,10 @@ public class Window extends JFrame{
     final static int FRAME_Y = 700;
     /** Padding for window size: X
      * ElCapitan: 0, Windows7: 8  */   
-    final static int PADDING_X = 8;
+    final static int PADDING_X = 0;
     /** Padding for window size: Y
      * ElCapitan: 23, Windows7: 30  */ 
-    final static int PADDING_Y = 30;
+    final static int PADDING_Y = 23;
     
     //Double Buffering
     private Image photo;
@@ -65,8 +65,8 @@ public class Window extends JFrame{
         rectangles = new ArrayList<MyRectangle>();
         people = new ArrayList<Person>();
         
-        for(double i = 0 ; i <= 1 ; i += 0.1){
-            for(double j = 0 ; j <= 1 ; j += 0.1){
+        for(double i = 0 ; i <= 1 ; i += 0.1) {
+            for(double j = 0 ; j <= 1 ; j += 0.1) {
             	new Person(Vector.createFromRect(i, j), (Math.random() / 50), randomColor(new Random()),Teams.NONE, 10, this);
             }
         }
