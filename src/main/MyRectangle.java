@@ -76,8 +76,8 @@ public class MyRectangle{
      * Acts upon distance based on velocity and velocity based on acceleration
      */
     public void physics() {
-        position.addWith(velocity);
-        velocity.addWith(acceleration);
+    	position = position.addWith(velocity);
+        velocity = velocity.addWith(acceleration);
         mass = width * height;
 //        System.out.println(mass);
 //        System.out.println(1 / mass);
