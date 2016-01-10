@@ -79,20 +79,20 @@ public class MyRectangle{
     	position = position.addWith(velocity);
         velocity = velocity.addWith(acceleration);
         mass = width * height;
-//        acceleration = netForce.multiplyWith(1 / mass);
+        //acceleration = netForce.multiplyWith(1 / mass);
         
         //Controls Sizes below 0
-    	if(virtualWidth > 0) {
+    	if(virtualWidth > MIN_LENGTH) {
     		inputWidth = virtualWidth;
     	}
     	else{
-    		inputWidth = 0; 
+    		inputWidth = MIN_LENGTH; 
     	}
-    	if(virtualHeight > 0) {
+    	if(virtualHeight > MIN_LENGTH) {
     		inputHeight = virtualHeight;
     	}
     	else{
-    		inputHeight = 0;
+    		inputHeight = MIN_LENGTH;
     	}
     }
     
@@ -153,14 +153,14 @@ public class MyRectangle{
     
     /** Increases Width and Length by some small amount */
     public void grow() {
-    	virtualWidth += epsilon;
-    	virtualHeight += epsilon;
+    	virtualWidth += EPSILON;
+    	virtualHeight += EPSILON;
     }
     
     /** Decreases Width and Length by some small amount */
     public void shrink() {
-        virtualWidth -= epsilon;
-    	virtualHeight -= epsilon;
+        virtualWidth -= EPSILON;
+    	virtualHeight -= EPSILON;
     }
     
     /**
@@ -196,6 +196,8 @@ public class MyRectangle{
     
     //-------------Static-------------//
     /** Small amount for growth */
-    private final static double epsilon = 0.001;
+    private final static double EPSILON = 0.001;
+    /** Very Small amount to retain good physics */
+    private final static double MIN_LENGTH = 0.000000000000000001;
 }
 

@@ -48,7 +48,7 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.BLACK);
         
-        t = new Timer(1, (ActionEvent e) ->  {
+        t = new Timer(0, (ActionEvent e) ->  {
         	keysPressed = m.getKeysPressed();
             //Moving
             rectangles.forEach(r -> {
@@ -73,9 +73,9 @@ public class Window extends JFrame {
         rectangles = new ArrayList<MyRectangle>();
         people = new ArrayList<Person>();
         
-        for(double i = 0 ; i <= 1 ; i += 0.1237) {
-            for(double j = 0 ; j <= 1 ; j += 0.1) {
-            	new Person(Vector.createFromRect(i, j), 0.01, Util.randomColor(new Random()), Teams.NONE, 10, this);
+        for(double i = 0 ; i <= 1 ; i += 0.3) {
+            for(double j = 0 ; j <= 1 ; j += 0.3) {
+            	new Person(Vector.createFromRect(i, j), (Math.random() / 30), Util.randomColor(new Random()), Teams.NONE, 10, this);
             }
         }
     }
