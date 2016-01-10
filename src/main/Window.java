@@ -3,20 +3,18 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import enums.Teams;
 import listening.MyKeyListener;
-/**
- * Main Class: all main code
- * @author Connor Lehmacher
- */
+
 @SuppressWarnings("serial")
-public class Window extends JFrame{     
+public class Window extends JFrame {
 	//-------------Fields--------------//
     /** Initial Size of the frame: X */
     final static int FRAME_X = 700;
@@ -33,20 +31,12 @@ public class Window extends JFrame{
     private Image photo;
     private Graphics dbg;
    
+    Timer t;
     MyKeyListener m;
     ArrayList<Boolean> keysPressed;
     ArrayList<MyRectangle> rectangles;
     ArrayList<Person> people;
-    
-    /**
-     * Main Method
-     */
-    public static void main(String[] args) {
-    	Window window = new Window();
-    	SwingUtilities.invokeLater(() -> window.setVisible(true));
-    	window.run();
-    }
-    
+
     /**
      * Makes Frame Makes objects
      */
@@ -56,34 +46,9 @@ public class Window extends JFrame{
         //Set up how the frame works
         setSize(FRAME_X , FRAME_Y);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(new Color(10, 10, 10));
+        setBackground(Color.BLACK);
         
-        m = new MyKeyListener();
-        addKeyListener(m);
-        
-        keysPressed = new ArrayList<Boolean>();
-        rectangles = new ArrayList<MyRectangle>();
-        people = new ArrayList<Person>();
-        
-        for(double i = 0 ; i <= 1 ; i += 0.1) {
-            for(double j = 0 ; j <= 1 ; j += 0.1) {
-            	new Person(Vector.createFromRect(i, j), (Math.random() / 50), randomColor(new Random()),Teams.NONE, 10, this);
-            }
-        }
-    }
-    
-    /**
-     * Generates a new random color using random source r.
-     */
-    private Color randomColor(Random r) {
-    	return new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
-    }
-    
-    /**
-     * Let the program run.  Never returns!
-     */
-    public void run() {
-        while(true){
+        t = new Timer(1, (ActionEvent e) ->  {
         	keysPressed = m.getKeysPressed();
             //Moving
             rectangles.forEach(r -> {
@@ -98,7 +63,20 @@ public class Window extends JFrame{
             		r.shrink();
             	}
             });
-            people.forEach(p -> p.wander());
+            //people.forEach(p -> p.wander());
+        });
+        
+        m = new MyKeyListener();
+        addKeyListener(m);
+        
+        keysPressed = new ArrayList<Boolean>();
+        rectangles = new ArrayList<MyRectangle>();
+        people = new ArrayList<Person>();
+        
+        for(double i = 0 ; i <= 1 ; i += 0.1237) {
+            for(double j = 0 ; j <= 1 ; j += 0.1) {
+            	new Person(Vector.createFromRect(i, j), 0.01, Util.randomColor(new Random()), Teams.NONE, 10, this);
+            }
         }
     }
     
@@ -145,6 +123,3 @@ public class Window extends JFrame{
         people.add(person);
     }
 }
-
-
-

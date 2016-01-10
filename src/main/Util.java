@@ -1,5 +1,8 @@
 package main;
 
+import java.awt.Color;
+import java.util.Random;
+
 /**
  * All Static Utility "Functions" 
  * @author Connor Lehmacher
@@ -11,4 +14,11 @@ public class Util {
 	public static double sq(double a) {
 		return a * a;
 	}
+	
+    /**
+     * Generates a new random color using random source r.
+     */
+    public static Color randomColor(Random r) {
+    	return new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
+    }
 }
