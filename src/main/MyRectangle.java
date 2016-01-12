@@ -39,7 +39,7 @@ public class MyRectangle{
         
         velocity = new Vector();
         acceleration = new Vector();
-        netForce = new Vector();
+        netForce = Vector.createFromRect(0, 0.0000000000001);
     }
     
     /** No Motion with color and place */
@@ -150,14 +150,14 @@ public class MyRectangle{
     
     /** Increases Width and Length by some small amount */
     public void grow() {
-    	virtualWidth += EPSILON;
-    	virtualHeight += EPSILON;
+    	virtualWidth += Window.EPSILON;
+    	virtualHeight += Window.EPSILON;
     }
     
     /** Decreases Width and Length by some small amount */
     public void shrink() {
-        virtualWidth -= EPSILON;
-    	virtualHeight -= EPSILON;
+        virtualWidth -= Window.EPSILON;
+    	virtualHeight -= Window.EPSILON;
     }
     
     /**
@@ -166,9 +166,9 @@ public class MyRectangle{
      */
     public void gravity(MyRectangle mR) {
     	if(this != mR){
-    		final double weight = G * mass * mR.mass / Util.sq(position.distanceWith(mR.position));
+    		final double weight = Window.G * mass * mR.mass / Util.sq(position.distanceWith(mR.position));
     		final double theta = position.angleWith(mR.position);
-    		netForce.addWith(Vector.createFromPolar(weight, theta));
+    		netForce = netForce.addWith(Vector.createFromPolar(weight, theta));
     	}
     }
     
@@ -194,11 +194,7 @@ public class MyRectangle{
     }
     
     //-------------Static-------------//
-    /** Small amount for growth */
-    private static final double EPSILON = 0.00001;
     /** Very Small amount to retain good physics */
     private final static double MIN_LENGTH = 0.000000000000000001;
-    /** Gravitational Constant of the Universe */
-    private final static double G = 1;
 }
 

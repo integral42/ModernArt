@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import enums.Teams;
 import listening.MyKeyListener;
 
 @SuppressWarnings("serial")
@@ -25,6 +24,12 @@ public class Window extends JFrame {
     /** Padding for window size: Y
      * ElCapitan: 23, Windows7: 30  */ 
     final static int PADDING_Y = 30;
+    /** Initial Speed */
+    final static double INITIAL_SPEED = 0/*0.000025*/;
+    /** Small amount for growth */
+    final static double EPSILON = 0.0000001;
+    /** Gravitational Constant of the Universe */
+    final static double G = 1000000000;
     
     //Double Buffering
     private Image photo;
@@ -53,11 +58,14 @@ public class Window extends JFrame {
         rectangles = new ArrayList<MyRectangle>();
         people = new ArrayList<Person>();
         
+        new Person(Vector.createFromRect(0.2, 0.7), 0.01, Util.randomColor(new Random()), this);
+        new Person(Vector.createFromRect(0.7, 0.2), 0.01, Util.randomColor(new Random()), this);
+        /* Make lots of rectangles
         for(double i = 0 ; i <= FRAME_X ; i += 100) {
             for(double j = 0 ; j <= FRAME_Y ; j += 100) {
-            	new Person(Vector.createFromRect(i, j), (Math.random() / 30), Util.randomColor(new Random()), Teams.NONE, 10, this);
+            	new Person(Vector.createFromRect(i, j), (Math.random() / 30), Util.randomColor(new Random()), this);
            }
-        }
+        }*/
     }
     
     
