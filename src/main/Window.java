@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 import enums.Teams;
 import listening.MyKeyListener;
@@ -20,10 +21,10 @@ public class Window extends JFrame {
     final static int FRAME_Y = 700;
     /** Padding for window size: X
      * ElCapitan: 0, Windows7: 8  */   
-    final static int PADDING_X = 0;
+    final static int PADDING_X = 8;
     /** Padding for window size: Y
      * ElCapitan: 23, Windows7: 30  */ 
-    final static int PADDING_Y = 23;
+    final static int PADDING_Y = 30;
     
     //Double Buffering
     private Image photo;
@@ -33,10 +34,10 @@ public class Window extends JFrame {
     ArrayList<Boolean> keysPressed;
     ArrayList<MyRectangle> rectangles;
     ArrayList<Person> people;
+    Timer t;
 
-    /**
-     * Makes Frame Makes objects
-     */
+    //----------Constructor--------//
+    /** Makes Frame Makes objects */
     public Window() {
         super();
         
@@ -59,6 +60,8 @@ public class Window extends JFrame {
         }
     }
     
+    
+    //------Methods--------//
     /** Logic loop */
     public void run() {
     	while(true) {
@@ -79,9 +82,7 @@ public class Window extends JFrame {
     	}
     }
     
-    /**
-     * Double buffering
-     */
+    /** Double buffering */
     @Override
     public void paint(Graphics g) {
     	final int frameX =  (int)(this.getContentPane().getWidth() + PADDING_X + 1);
@@ -91,6 +92,7 @@ public class Window extends JFrame {
         paintComponent(dbg);
         g.drawImage(photo, 0, 0, this);
     }
+    
     /**
      * paint loop
      * draws rectangles/people
@@ -108,16 +110,12 @@ public class Window extends JFrame {
         repaint();
     }  
     
-    /**
-     * adds MyRectangle objects to rectangles
-     */
+    /** adds MyRectangle objects to rectangles */
     public void addToRectangles(MyRectangle myRect) {
         rectangles.add(myRect);
     }
     
-    /**
-     * adds Person objects to People
-     */
+    /** adds Person objects to People */
     public void addToPeople(Person person) {
         people.add(person);
     }

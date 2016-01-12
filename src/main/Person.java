@@ -20,7 +20,7 @@ public class Person extends MyRectangle {
     /** Can be used to generate a size, attack and health */
     double level;
     
-    //--------------Constructors--------------------//
+    //--------------Constructors----------------//
     /** Person with some location, size, color, health and team (for customization) */
     public Person(Vector position, double size, Color color, Teams team, double health, Window location){
         super(position, size, color, location);
