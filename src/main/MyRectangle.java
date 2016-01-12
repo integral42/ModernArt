@@ -164,9 +164,11 @@ public class MyRectangle{
      * Physics-Gravity for any 2 bodies with mass and distance
      * adds to <b> netForce </b>
      */
-    public void gravity(MyRectangle myRect) {
-    	if(this != myRect){
-    		
+    public void gravity(MyRectangle mR) {
+    	if(this != mR){
+    		final double weight = G * mass * mR.mass / Util.sq(position.distanceWith(mR.position));
+    		final double theta = position.angleWith(mR.position);
+    		netForce.addWith(Vector.createFromPolar(weight, theta));
     	}
     }
     
@@ -193,8 +195,10 @@ public class MyRectangle{
     
     //-------------Static-------------//
     /** Small amount for growth */
-    private final static double EPSILON = 0.000001;
+    private static final double EPSILON = 0.00001;
     /** Very Small amount to retain good physics */
     private final static double MIN_LENGTH = 0.000000000000000001;
+    /** Gravitational Constant of the Universe */
+    private final static double G = 1;
 }
 

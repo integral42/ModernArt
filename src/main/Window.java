@@ -52,10 +52,10 @@ public class Window extends JFrame {
         rectangles = new ArrayList<MyRectangle>();
         people = new ArrayList<Person>();
         
-        for(double i = 0 ; i <= 1 ; i += 0.3) {
-            for(double j = 0 ; j <= 1 ; j += 0.3) {
+        for(double i = 0 ; i <= FRAME_X ; i += 100) {
+            for(double j = 0 ; j <= FRAME_Y ; j += 100) {
             	new Person(Vector.createFromRect(i, j), (Math.random() / 30), Util.randomColor(new Random()), Teams.NONE, 10, this);
-            }
+           }
         }
     }
     
