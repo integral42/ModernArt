@@ -39,7 +39,7 @@ public class MyRectangle{
         
         velocity = new Vector();
         acceleration = new Vector();
-        netForce = Vector.createFromRect(0, 0.0000000000001);
+        netForce = new Vector();
     }
     
     /** No Motion with color and place */
@@ -167,7 +167,9 @@ public class MyRectangle{
     public void gravity(MyRectangle mR) {
     	if(this != mR){
     		final double weight = Window.G * mass * mR.mass / Util.sq(position.distanceWith(mR.position));
+    		System.out.println(weight);
     		final double theta = position.angleWith(mR.position);
+    		System.out.println(theta);
     		netForce = netForce.addWith(Vector.createFromPolar(weight, theta));
     	}
     }

@@ -29,7 +29,7 @@ public class Window extends JFrame {
     /** Small amount for growth */
     final static double EPSILON = 0.0000001;
     /** Gravitational Constant of the Universe */
-    final static double G = 1000000000;
+    final static double G = 0.0000000667408;
     
     //Double Buffering
     private Image photo;
@@ -58,14 +58,12 @@ public class Window extends JFrame {
         rectangles = new ArrayList<MyRectangle>();
         people = new ArrayList<Person>();
         
-        new Person(Vector.createFromRect(0.2, 0.7), 0.01, Util.randomColor(new Random()), this);
-        new Person(Vector.createFromRect(0.7, 0.2), 0.01, Util.randomColor(new Random()), this);
-        /* Make lots of rectangles
-        for(double i = 0 ; i <= FRAME_X ; i += 100) {
-            for(double j = 0 ; j <= FRAME_Y ; j += 100) {
-            	new Person(Vector.createFromRect(i, j), (Math.random() / 30), Util.randomColor(new Random()), this);
-           }
-        }*/
+        //new Person(Vector.createFromRect(0.2, 0.7), 0.01, Util.randomColor(new Random()), this);
+        //new Person(Vector.createFromRect(0.7, 0.2), 0.01, Util.randomColor(new Random()), this);
+        // Make lots of rectangles
+        for(double i = 0 ; i <= 1 ; i += 0.05) {
+            new Person(Vector.createFromRect(i, (Math.random()/ 5) + 0.4), (Math.random() / 30), Util.randomColor(new Random()), this);
+        }
     }
     
     
@@ -79,7 +77,10 @@ public class Window extends JFrame {
             	r.edgeBounce();
             	r.physics();
             	r.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
-            	rectangles.forEach(r1 -> r.collideWith(r1));
+            	rectangles.forEach(r1 -> {
+            		r.collideWith(r1);
+            		r.gravity(r1);
+            	});
             	if(keysPressed.get(MyKeyListener.UP)){
             		r.grow();
             	}
