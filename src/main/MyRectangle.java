@@ -66,13 +66,12 @@ public class MyRectangle{
     	height = inputHeight  * Window.FRAME_Y / h;
     }
     
-    /**
-     * Acts upon distance based on velocity and velocity based on acceleration
-     */
+    /** OK physics for now */
     public void physics() {
     	position = position.addWith(velocity);
         velocity = velocity.addWith(acceleration);
         mass = width * height;
+        //F = ma implementation
         if(mass > Util.sq(MIN_LENGTH)) {
         	acceleration = netForce.multiplyWith(1 / mass);
         }
@@ -93,9 +92,7 @@ public class MyRectangle{
     	}
     }
     
-    /**
-     * collision between rectangles
-     */
+    /** collision between rectangles */
     public void collideWith(MyRectangle mR) {
         if(mR != this) {
             if(           		/*Bottom Left*/
@@ -125,9 +122,7 @@ public class MyRectangle{
         }
     }
 
-    /**
-     * edge collision
-     */
+    /** edge collision */
     public void edgeBounce() {
         if(position.x < 0) {
         	velocity.x = -velocity.x;
@@ -162,7 +157,7 @@ public class MyRectangle{
     
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
-     * adds to <b> netForce </b>
+     * adds to netForce
      */
     public void gravity(MyRectangle mR) {
     	if(this != mR){

@@ -36,7 +36,12 @@ public class Vector {
     
     /** Angle between two vectors */
     public double angleWith(Vector v) {
-    	return Math.acos((x * v.x + y * v.y)/(norm() * v.norm()));
+    	if((v.y - y) > 0) {
+    		return Math.atan2(v.y - y, v.x -x);
+    	}
+    	else {
+    		return Math.PI + Math.atan2(v.y - y, v.x -x);
+   		}
     }
     
     /** Scalar Multiply */

@@ -20,10 +20,10 @@ public class Window extends JFrame {
     final static int FRAME_Y = 700;
     /** Padding for window size: X
      * ElCapitan: 0, Windows7: 8  */   
-    final static int PADDING_X = 8;
+    final static int PADDING_X = 0;
     /** Padding for window size: Y
      * ElCapitan: 23, Windows7: 30  */ 
-    final static int PADDING_Y = 30;
+    final static int PADDING_Y = 23;
     /** Initial Speed */
     final static double INITIAL_SPEED = 0/*0.000025*/;
     /** Small amount for growth */
