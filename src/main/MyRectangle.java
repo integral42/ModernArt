@@ -9,7 +9,7 @@ public class MyRectangle{
 	//-----------Fields-----------//
     //"Original Size" (adjusted by arrows) != 0
     private double inputWidth, inputHeight;
-    //Same as input* but can be < 0
+    //Same as input but can be < 0
     private double virtualWidth, virtualHeight;
     //Adjusted for screen size but still between 0 and 1
     private double width, height;
@@ -23,18 +23,17 @@ public class MyRectangle{
     /** Some Vector in component form for Net Force */
     private Vector netForce;
     private Color color;
-    /** Used for adding of object to the array-list in main */
     
     //----------Constructors-----------//
     /**
      * Forms Basis of all other constructors
      */
-    public MyRectangle(Vector position, double inputwidth, double inputHeight){
+    public MyRectangle(Vector position, double inputWidth, double inputHeight){
         this.position = position;
-        this.inputWidth = inputwidth;
+        this.inputWidth = inputWidth;
         this.inputHeight = inputHeight;
         
-        mass = inputwidth * inputHeight;
+        mass = inputWidth * inputHeight;
         virtualWidth = inputWidth;
         virtualHeight = inputHeight;
         
@@ -43,20 +42,15 @@ public class MyRectangle{
         netForce = new Vector();
     }
     
-    /**
-     * No Motion with color and place
-     */
+    /** No Motion with color and place */
     public MyRectangle(Vector position, double size, Color color, Window location){
         this(position, size, size);
         
         this.color = color;
-        
         location.addToRectangles(this);
     }
     
-    /**
-     * Fully Operational
-     */
+    /** Fully Operational */
     public MyRectangle(Vector position, double size, Color color, Vector velocity, Window location){
         this(position, size, color, location);
                 
@@ -79,19 +73,22 @@ public class MyRectangle{
     	position = position.addWith(velocity);
         velocity = velocity.addWith(acceleration);
         mass = width * height;
-        //acceleration = netForce.multiplyWith(1 / mass);
+        if(mass > Util.sq(MIN_LENGTH)) {
+        	acceleration = netForce.multiplyWith(1 / mass);
+        }
+        else { acceleration = new Vector(); }
         
         //Controls Sizes below 0
     	if(virtualWidth > MIN_LENGTH) {
     		inputWidth = virtualWidth;
     	}
-    	else{
+    	else {
     		inputWidth = MIN_LENGTH; 
     	}
     	if(virtualHeight > MIN_LENGTH) {
     		inputHeight = virtualHeight;
     	}
-    	else{
+    	else {
     		inputHeight = MIN_LENGTH;
     	}
     }
@@ -196,7 +193,7 @@ public class MyRectangle{
     
     //-------------Static-------------//
     /** Small amount for growth */
-    private final static double EPSILON = 0.001;
+    private final static double EPSILON = 0.000001;
     /** Very Small amount to retain good physics */
     private final static double MIN_LENGTH = 0.000000000000000001;
 }

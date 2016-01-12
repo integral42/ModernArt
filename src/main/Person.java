@@ -34,7 +34,7 @@ public class Person extends MyRectangle {
         this.health = health;
         
         //Makes Person initially move
-        velocity = Vector.createFromPolar(0.004, Math.random() * Math.PI * 2);
+        velocity = Vector.createFromPolar(0.000002, Math.random() * Math.PI * 2);
         location.addToPeople(this);
         //Arbitrary Amount
         level = 3;

@@ -3,12 +3,10 @@ package main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 import enums.Teams;
 import listening.MyKeyListener;
@@ -31,7 +29,6 @@ public class Window extends JFrame {
     private Image photo;
     private Graphics dbg;
    
-    Timer t;
     MyKeyListener m;
     ArrayList<Boolean> keysPressed;
     ArrayList<MyRectangle> rectangles;
@@ -48,8 +45,24 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.BLACK);
         
-        t = new Timer(0, (ActionEvent e) ->  {
-        	keysPressed = m.getKeysPressed();
+        m = new MyKeyListener();
+        addKeyListener(m);
+        
+        keysPressed = new ArrayList<Boolean>();
+        rectangles = new ArrayList<MyRectangle>();
+        people = new ArrayList<Person>();
+        
+        for(double i = 0 ; i <= 1 ; i += 0.3) {
+            for(double j = 0 ; j <= 1 ; j += 0.3) {
+            	new Person(Vector.createFromRect(i, j), (Math.random() / 30), Util.randomColor(new Random()), Teams.NONE, 10, this);
+            }
+        }
+    }
+    
+    /** Logic loop */
+    public void run() {
+    	while(true) {
+    		keysPressed = m.getKeysPressed();
             //Moving
             rectangles.forEach(r -> {
             	r.edgeBounce();
@@ -63,21 +76,7 @@ public class Window extends JFrame {
             		r.shrink();
             	}
             });
-            //people.forEach(p -> p.wander());
-        });
-        
-        m = new MyKeyListener();
-        addKeyListener(m);
-        
-        keysPressed = new ArrayList<Boolean>();
-        rectangles = new ArrayList<MyRectangle>();
-        people = new ArrayList<Person>();
-        
-        for(double i = 0 ; i <= 1 ; i += 0.3) {
-            for(double j = 0 ; j <= 1 ; j += 0.3) {
-            	new Person(Vector.createFromRect(i, j), (Math.random() / 30), Util.randomColor(new Random()), Teams.NONE, 10, this);
-            }
-        }
+    	}
     }
     
     /**

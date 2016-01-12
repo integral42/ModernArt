@@ -12,32 +12,24 @@ public class Vector {
 		this.y = y;
 	}
 	
-	/**
-	 * Default; 0s
-	 */
+	/** Default; 0 */
 	public Vector() {
 		x = 0;
 		y = 0;
 	}
 	
 	//--------------Methods----------------//
-    /**
-     * find the size of a vector
-     */
+    /** find the size of a vector */
     public double norm() {
     	return Math.sqrt(Util.sq(x) + Util.sq(y));
     }
     
-    /**
-     * Find the angle of a vector
-     */
+    /** Find the angle of a vector */
     public double theta() {
-    	return Math.atan2(y, x);
+    	return Math.atan(y / x);
     }
     
-    /**
-     * Distance formula between two vectors
-     */
+    /** Distance formula between two vectors */
     public double distanceWith(Vector v) {
     	return Math.sqrt(Util.sq(x - v.x) + Util.sq(y - v.y));
     }
