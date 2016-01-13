@@ -36,17 +36,21 @@ public class Vector {
     
     /** Angle between two vectors */
     public double angleWith(Vector v) {
-    	if((v.y - y) > 0) {
-    		return Math.atan2(v.y - y, v.x -x);
-    	}
-    	else {
-    		return Math.PI + Math.atan2(v.y - y, v.x -x);
-   		}
+    	Util.ifNearZeroThen(v.y -y, () -> {
+    		System.out.println(1);
+    	}, () -> {
+    		System.out.println(2);
+    	});
+    	return Math.acos(multiplyWith(v)/(norm() * v.norm()));
     }
     
     /** Scalar Multiply */
     public Vector multiplyWith(double a) {
     	return createFromRect(x * a, y * a);
+    }
+    
+    public double multiplyWith(Vector v ) {
+    	return x * v.x + y* v.y;
     }
     
     /** Vector Add */
