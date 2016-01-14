@@ -28,7 +28,7 @@ public class Window extends JFrame {
     final static double INITIAL_SPEED = 0/*0.000025*/;
     /** Small amount for growth */
     final static double EPSILON = 0.0000001;
-    /** Gravitational Constant of the Universe */
+    /** Gravitational Constant of the Universe decresed by 1000 */
     final static double G = 6.67408e-16;
     
     //Double Buffering
