@@ -14,11 +14,11 @@ public class Mass{
     //Adjusted for screen size but still between 0 and 1
     private double width, height;
     private double mass;
-    protected double density;
+    private double density;
     /** Some Vector in component form for Position (Displacement) */
     private Vector position;
     /** Some Vector in component form for Velocity */
-    protected Vector velocity;
+    private Vector velocity;
     /** Some Vector in component form for Acceleration */
     private Vector acceleration;
     /** Some Vector in component form for Net Force */
@@ -26,15 +26,13 @@ public class Mass{
     private Color color;
     
     //----------Constructors-----------//
-    /**
-     * Forms Basis of all other constructors
-     */
+    /** Forms Basis of all other constructors */
     public Mass(Vector position, double inputWidth, double inputHeight){
         this.position = position;
         this.inputWidth = inputWidth;
         this.inputHeight = inputHeight;
         
-        density = 1.02;
+        density = 1;
         mass = inputWidth * inputHeight * density;
         virtualWidth = inputWidth;
         virtualHeight = inputHeight;
@@ -44,7 +42,7 @@ public class Mass{
         netForce = new Vector();
     }
     
-    /** No Motion with color and place */
+    /** Color and place */
     public Mass(Vector position, double size, Color color, Window location){
         this(position, size, size);
         
@@ -52,7 +50,7 @@ public class Mass{
         location.addToMasses(this);
     }
     
-    /** Fully Operational */
+    /** Velocity, color and place */
     public Mass(Vector position, double size, Color color, Vector velocity, Window location){
         this(position, size, color, location);
         if(velocity.isZero()) {
@@ -61,6 +59,13 @@ public class Mass{
         else {
         	this.velocity = velocity;
         }
+    }
+    
+    /** Density, color and place */
+    public Mass(Vector position, double size, Color color, double density, Window location){
+        this(position, size, color, location);
+
+        this.density = density;
     }
     
     //------------------------Methods----------------------//
@@ -122,8 +127,8 @@ public class Mass{
                 	position.y <= mR.position.y + mR.height &&
                 	position.y + (height / 2) >= mR.position.y + mR.height)
             																) {
-            	velocity.x = -velocity.x;
-            	velocity.y = -velocity.y;
+            	velocity.x = -mR.velocity.x;
+            	velocity.y = -mR.velocity.y;
             }
         }
     }
@@ -161,12 +166,17 @@ public class Mass{
     	virtualHeight -= Window.EPSILON;
     }
     
+    /** Resets location if it glitches */
+    public void resetPosition() {
+    	position = Vector.createFromRect((Math.random()/ 5) + 0.4, (Math.random()/ 5) + 0.4);
+    }
+    
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
      * adds to netForce
      */
     public void gravity(Mass mR) {
-    	if(this != mR){
+    	if(this != mR) {
     		final double weight = Window.G * mass * mR.mass / Util.sq(position.distanceWith(mR.position));
     		final double theta = position.angleWith(mR.position);
     		netForce = netForce.addWith(Vector.createFromPolar(weight, theta));
