@@ -104,31 +104,31 @@ public class Mass{
     }
     
     /** collision between rectangles */
-    public void collideWith(Mass mR) {
-        if(mR != this) {
+    public void collideWith(Mass m) {
+        if(m != this) {
             if(           		/*Bottom Left*/
-            	(position.x + width >= mR.position.x &&
-            		position.x + width <= mR.position.x + (mR.width / 2) &&
-                	position.y + height >= mR.position.y &&
-               		position.y + height <= mR.position.y + (mR.height / 2))
+            	(position.x + width >= m.position.x &&
+            		position.x + width <= m.position.x + (m.width / 2) &&
+                	position.y + height >= m.position.y &&
+               		position.y + height <= m.position.y + (m.height / 2))
                	||				/*Top Right*/
-               	(position.x <= mR.position.x + mR.width &&
-               		position.x + (width / 2) >= mR.position.x + mR.width &&
-        			position.y <= mR.position.y + mR.height &&
-        			position.y + (height / 2) >= mR.position.y + mR.height)	
+               	(position.x <= m.position.x + m.width &&
+               		position.x + (width / 2) >= m.position.x + m.width &&
+        			position.y <= m.position.y + m.height &&
+        			position.y + (height / 2) >= m.position.y + m.height)	
             	||				/*Bottom Right*/
-        		(position.x <= mR.position.x + mR.width &&
-                	position.x + (width / 2) >= mR.position.x + mR.width &&
-                	position.y + height >= mR.position.y &&
-                   	position.y + height <= mR.position.y + (mR.height / 2))
+        		(position.x <= m.position.x + m.width &&
+                	position.x + (width / 2) >= m.position.x + m.width &&
+                	position.y + height >= m.position.y &&
+                   	position.y + height <= m.position.y + (m.height / 2))
                 ||				/*Top Left*/
-                (position.x + width >= mR.position.x &&
-                	position.x + width <= mR.position.x + (mR.width / 2) &&
-                	position.y <= mR.position.y + mR.height &&
-                	position.y + (height / 2) >= mR.position.y + mR.height)
+                (position.x + width >= m.position.x &&
+                	position.x + width <= m.position.x + (m.width / 2) &&
+                	position.y <= m.position.y + m.height &&
+                	position.y + (height / 2) >= m.position.y + m.height)
             																) {
-            	velocity.x = -mR.velocity.x;
-            	velocity.y = -mR.velocity.y;
+            	velocity.x = -m.velocity.x;
+            	velocity.y = -m.velocity.y;
             }
         }
     }
@@ -171,14 +171,20 @@ public class Mass{
     	position = Vector.createFromRect((Math.random()/ 5) + 0.4, (Math.random()/ 5) + 0.4);
     }
     
+    /** Set Velocity and netForce to 0 */
+    public void freeze() {
+    	velocity = new Vector();
+    	netForce = new Vector();
+    }
+    
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
      * adds to netForce
      */
-    public void gravity(Mass mR) {
-    	if(this != mR) {
-    		final double weight = Window.G * mass * mR.mass / Util.sq(position.distanceWith(mR.position));
-    		final double theta = position.angleWith(mR.position);
+    public void gravity(Mass m) {
+    	if(this != m) {
+    		final double weight = Window.G * mass * m.mass / Util.sq(position.distanceWith(m.position));
+    		final double theta = position.angleWith(m.position);
     		netForce = netForce.addWith(Vector.createFromPolar(weight, theta));
     	}
     }
