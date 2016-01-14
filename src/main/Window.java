@@ -29,7 +29,7 @@ public class Window extends JFrame {
     /** Small amount for growth */
     final static double EPSILON = 0.0000001;
     /** Gravitational Constant of the Universe */
-    final static double G = 6.67408e-11;
+    final static double G = 6.67408e-16;
     
     //Double Buffering
     private Image photo;
@@ -58,7 +58,7 @@ public class Window extends JFrame {
         
         new Mass(Vector.createFromRect(0.2, 0.7), 0.01, Util.randomColor(new Random()), this);
         new Mass(Vector.createFromRect(0.7, 0.2), 0.01, Util.randomColor(new Random()), this);
-        // Make lots of rectangles
+        // Make lots of masses
         //for(double i = 0 ; i <= 1 ; i += 0.05) {
         //    new PointMass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4), (Math.random() / 30), Util.randomColor(new Random()), this);
         //}
