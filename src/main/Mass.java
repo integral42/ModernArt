@@ -5,7 +5,7 @@ import java.awt.Color;
  * Movable Colorful Rectangle
  * @author Connor Lehmacher
  */
-public class MyRectangle{
+public class Mass{
 	//-----------Fields-----------//
     //"Original Size" (adjusted by arrows) != 0
     private double inputWidth, inputHeight;
@@ -14,6 +14,7 @@ public class MyRectangle{
     //Adjusted for screen size but still between 0 and 1
     private double width, height;
     private double mass;
+    protected double density;
     /** Some Vector in component form for Position (Displacement) */
     private Vector position;
     /** Some Vector in component form for Velocity */
@@ -28,12 +29,13 @@ public class MyRectangle{
     /**
      * Forms Basis of all other constructors
      */
-    public MyRectangle(Vector position, double inputWidth, double inputHeight){
+    public Mass(Vector position, double inputWidth, double inputHeight){
         this.position = position;
         this.inputWidth = inputWidth;
         this.inputHeight = inputHeight;
         
-        mass = inputWidth * inputHeight;
+        density = 1.02;
+        mass = inputWidth * inputHeight * density;
         virtualWidth = inputWidth;
         virtualHeight = inputHeight;
         
@@ -43,18 +45,22 @@ public class MyRectangle{
     }
     
     /** No Motion with color and place */
-    public MyRectangle(Vector position, double size, Color color, Window location){
+    public Mass(Vector position, double size, Color color, Window location){
         this(position, size, size);
         
         this.color = color;
-        location.addToRectangles(this);
+        location.addToMasses(this);
     }
     
     /** Fully Operational */
-    public MyRectangle(Vector position, double size, Color color, Vector velocity, Window location){
+    public Mass(Vector position, double size, Color color, Vector velocity, Window location){
         this(position, size, color, location);
-                
-        this.velocity = velocity;
+        if(velocity.isZero()) {
+        	this.velocity = Vector.createFromPolar(Window.INITIAL_SPEED, Math.random() * Math.PI * 2);
+        }
+        else {
+        	this.velocity = velocity;
+        }
     }
     
     //------------------------Methods----------------------//
@@ -68,15 +74,15 @@ public class MyRectangle{
     
     /** OK physics for now */
     public void physics() {
-    	position = position.addWith(velocity);
-        velocity = velocity.addWith(acceleration);
-        mass = width * height;
+        mass = width * height * density;
         //F = ma implementation
         if(mass > Util.sq(MIN_LENGTH)) {
-        	acceleration = netForce.multiplyWith(1 / mass);
+        	acceleration = netForce.scaleBy(1 / mass);
         }
         else { acceleration = new Vector(); }
-        
+        velocity = velocity.addWith(acceleration);
+    	position = position.addWith(velocity);
+
         //Controls Sizes below 0
     	if(virtualWidth > MIN_LENGTH) {
     		inputWidth = virtualWidth;
@@ -93,7 +99,7 @@ public class MyRectangle{
     }
     
     /** collision between rectangles */
-    public void collideWith(MyRectangle mR) {
+    public void collideWith(Mass mR) {
         if(mR != this) {
             if(           		/*Bottom Left*/
             	(position.x + width >= mR.position.x &&
@@ -159,11 +165,10 @@ public class MyRectangle{
      * Physics-Gravity for any 2 bodies with mass and distance
      * adds to netForce
      */
-    public void gravity(MyRectangle mR) {
+    public void gravity(Mass mR) {
     	if(this != mR){
     		final double weight = Window.G * mass * mR.mass / Util.sq(position.distanceWith(mR.position));
     		final double theta = position.angleWith(mR.position);
-    		System.out.println(theta);
     		netForce = netForce.addWith(Vector.createFromPolar(weight, theta));
     	}
     }

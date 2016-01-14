@@ -29,7 +29,7 @@ public class Window extends JFrame {
     /** Small amount for growth */
     final static double EPSILON = 0.0000001;
     /** Gravitational Constant of the Universe */
-    final static double G = 0.0000000667408;
+    final static double G = 6.67408e-11;
     
     //Double Buffering
     private Image photo;
@@ -37,8 +37,7 @@ public class Window extends JFrame {
    
     MyKeyListener m;
     ArrayList<Boolean> keysPressed;
-    ArrayList<MyRectangle> rectangles;
-    ArrayList<Person> people;
+    ArrayList<Mass> masses;
     Timer t;
 
     //----------Constructor--------//
@@ -55,15 +54,14 @@ public class Window extends JFrame {
         addKeyListener(m);
         
         keysPressed = new ArrayList<Boolean>();
-        rectangles = new ArrayList<MyRectangle>();
-        people = new ArrayList<Person>();
+        masses = new ArrayList<Mass>();
         
-        //new Person(Vector.createFromRect(0.2, 0.7), 0.01, Util.randomColor(new Random()), this);
-        //new Person(Vector.createFromRect(0.7, 0.2), 0.01, Util.randomColor(new Random()), this);
+        new Mass(Vector.createFromRect(0.2, 0.7), 0.01, Util.randomColor(new Random()), this);
+        new Mass(Vector.createFromRect(0.7, 0.2), 0.01, Util.randomColor(new Random()), this);
         // Make lots of rectangles
-        for(double i = 0 ; i <= 1 ; i += 0.05) {
-            new Person(Vector.createFromRect(i, (Math.random()/ 5) + 0.4), (Math.random() / 30), Util.randomColor(new Random()), this);
-        }
+        //for(double i = 0 ; i <= 1 ; i += 0.05) {
+        //    new PointMass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4), (Math.random() / 30), Util.randomColor(new Random()), this);
+        //}
     }
     
     
@@ -73,11 +71,11 @@ public class Window extends JFrame {
     	while(true) {
     		keysPressed = m.getKeysPressed();
             //Moving
-            rectangles.forEach(r -> {
+            masses.forEach(r -> {
             	r.edgeBounce();
             	r.physics();
             	r.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
-            	rectangles.forEach(r1 -> {
+            	masses.forEach(r1 -> {
             		r.collideWith(r1);
             		r.gravity(r1);
             	});
@@ -108,7 +106,7 @@ public class Window extends JFrame {
      */
     public void paintComponent(Graphics g) {   
         //Draws all the rectangles
-        for (MyRectangle mR : rectangles) {
+        for (Mass mR : masses) {
             g.setColor(mR.getColor());
             final int realX =  (int)(this.getContentPane().getWidth() * mR.getPosition().x + PADDING_X);
             final int realY =  (int)(this.getContentPane().getHeight() * mR.getPosition().y + PADDING_Y);
@@ -120,12 +118,7 @@ public class Window extends JFrame {
     }  
     
     /** adds MyRectangle objects to rectangles */
-    public void addToRectangles(MyRectangle myRect) {
-        rectangles.add(myRect);
-    }
-    
-    /** adds Person objects to People */
-    public void addToPeople(Person person) {
-        people.add(person);
+    public void addToMasses(Mass myRect) {
+        masses.add(myRect);
     }
 }

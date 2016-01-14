@@ -36,26 +36,60 @@ public class Vector {
     
     /** Angle between two vectors */
     public double angleWith(Vector v) {
-    	Util.ifNearZeroThen(v.y -y, () -> {
-    		System.out.println(1);
-    	}, () -> {
-    		System.out.println(2);
-    	});
-    	return Math.acos(multiplyWith(v)/(norm() * v.norm()));
+    	final double relX = v.x - x;
+    	final double relY = v.y - y;
+    	if(!Util.isNearZero(relX)) {
+    		final double BUTTERFLY_ANGLE = Math.acos(dotProduct(v) / (norm() * v.norm()));
+    		if(relY >= 0) {
+    			//Quadrant I
+    			if(relX >= 0) {
+    				return BUTTERFLY_ANGLE;
+    			}
+    			//Quadrant II
+    			else {
+    				return Math.PI - BUTTERFLY_ANGLE;
+    			}
+    		}
+    		else {
+    			//Quadrant III
+    			if(relX <= 0) {
+    				return Math.PI + BUTTERFLY_ANGLE;
+    			}
+    			//Quadrant IV
+    			else {
+    				return Math.PI * 2 - BUTTERFLY_ANGLE;
+    			}
+    		}
+    	}
+    	else {
+    		//Vertical Up
+    		if(relY >= 0) {
+    			return Math.PI / 2;
+    		}
+    		//Vertical Down
+    		else {
+    			return Math.PI * 3 / 2;
+    		}
+    	}
     }
     
     /** Scalar Multiply */
-    public Vector multiplyWith(double a) {
+    public Vector scaleBy(double a) {
     	return createFromRect(x * a, y * a);
     }
     
-    public double multiplyWith(Vector v ) {
+    /** Dot Product */
+    public double dotProduct(Vector v) {
     	return x * v.x + y* v.y;
     }
     
     /** Vector Add */
     public Vector addWith(Vector v) {
     	return createFromRect(x + v.x, y + v.y);
+    }
+    
+    public boolean isZero() {
+    	return x == 0 && y == 0;
     }
     //-----------------STATIC------------//
     /**
