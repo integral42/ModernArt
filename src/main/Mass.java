@@ -68,7 +68,7 @@ public class Mass{
         this.density = density;
     }
     
-    //------------------------Methods----------------------//
+    //------------------------Methods----------------------//  
     /** Reset Size
      * @param w the width of the real screen
      * @param h the height of the real screen */
@@ -77,9 +77,9 @@ public class Mass{
     	height = inputHeight  * Window.FRAME_Y / h;
     }
     
-    /** OK physics for now */
+    /** Only Refers to the object it self and how it moves
+     * to be run at the end of a cycle */
     public void physics() {
-        mass = width * height * density;
         //F = ma implementation
         if(mass > Util.sq(MIN_LENGTH)) {
         	acceleration = netForce.scaleBy(1 / mass);
@@ -88,19 +88,8 @@ public class Mass{
         velocity = velocity.addWith(acceleration);
     	position = position.addWith(velocity);
 
-        //Controls Sizes below 0
-    	if(virtualWidth > MIN_LENGTH) {
-    		inputWidth = virtualWidth;
-    	}
-    	else {
-    		inputWidth = MIN_LENGTH; 
-    	}
-    	if(virtualHeight > MIN_LENGTH) {
-    		inputHeight = virtualHeight;
-    	}
-    	else {
-    		inputHeight = MIN_LENGTH;
-    	}
+        mass = width * height * density;
+    	netForce = new Vector();
     }
     
     /** collision between rectangles */
@@ -158,12 +147,38 @@ public class Mass{
     public void grow() {
     	virtualWidth += Window.EPSILON;
     	virtualHeight += Window.EPSILON;
+        //Controls Sizes below 0
+    	if(virtualWidth > MIN_LENGTH) {
+    		inputWidth = virtualWidth;
+    	}
+    	else {
+    		inputWidth = MIN_LENGTH; 
+    	}
+    	if(virtualHeight > MIN_LENGTH) {
+    		inputHeight = virtualHeight;
+    	}
+    	else {
+    		inputHeight = MIN_LENGTH;
+    	}
     }
     
     /** Decreases Width and Length by some small amount */
     public void shrink() {
         virtualWidth -= Window.EPSILON;
     	virtualHeight -= Window.EPSILON;
+        //Controls Sizes below 0
+    	if(virtualWidth > MIN_LENGTH) {
+    		inputWidth = virtualWidth;
+    	}
+    	else {
+    		inputWidth = MIN_LENGTH; 
+    	}
+    	if(virtualHeight > MIN_LENGTH) {
+    		inputHeight = virtualHeight;
+    	}
+    	else {
+    		inputHeight = MIN_LENGTH;
+    	}
     }
     
     /** Resets location if it glitches */
