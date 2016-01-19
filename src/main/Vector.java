@@ -78,6 +78,11 @@ public class Vector {
     	return createFromRect(x * a, y * a);
     }
     
+    /** Negative of the Vector */
+    public Vector negative() {
+    	return scaleBy(-1);
+    }
+    
     /** Dot Product */
     public double dotProduct(Vector v) {
     	return x * v.x + y* v.y;
@@ -88,6 +93,12 @@ public class Vector {
     	return createFromRect(x + v.x, y + v.y);
     }
     
+    /** Vector Subtract */
+    public Vector subtractWith(Vector v) {
+    	return createFromRect(x - v.x, y - v.y);
+    }
+    
+    /** true if vector is a zero Vector */
     public boolean isZero() {
     	return x == 0 && y == 0;
     }

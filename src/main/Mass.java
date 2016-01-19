@@ -116,8 +116,11 @@ public class Mass{
                 	position.y <= m.position.y + m.height &&
                 	position.y + (height / 2) >= m.position.y + m.height)
             																) {
-            	velocity.x = -m.velocity.x;
-            	velocity.y = -m.velocity.y;
+            	final Vector positionDifference = position.subtractWith(m.position);
+            	final Vector velocityDifference = velocity.subtractWith(m.velocity);
+            	final double massConstant = 2 * m.mass / (mass + m.mass);
+            	final double speedConstant = velocityDifference.dotProduct(positionDifference) / Util.sq(positionDifference.norm());
+            	velocity = velocity.subtractWith(positionDifference.scaleBy(massConstant * speedConstant));
             }
         }
     }

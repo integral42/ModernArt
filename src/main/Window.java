@@ -29,8 +29,8 @@ public class Window extends JFrame {
     final static double INITIAL_SPEED = 0/*0.000025*/;
     /** Small amount for growth */
     final static double EPSILON = 0.00001;
-    /** Gravitational Constant of the Universe decreased by 100 */
-    final static double G = 6.67408e-11;
+    /** Gravitational Constant of the Universe increased by 10 */
+    final static double G = 6.67408e-10;
     
     //Double Buffering
     private Image photo;
@@ -62,14 +62,14 @@ public class Window extends JFrame {
         
         masses = new ArrayList<Mass>();
         
-        new Mass(Vector.createFromRect(0.4, 0.6), 0.01, Util.randomColor(new Random()), Vector.createFromRect(0.0000001, 0), this);
-        new Mass(Vector.createFromRect(0.6, 0.4), 0.01, Util.randomColor(new Random()), 2, this);
+//        new Mass(Vector.createFromRect(0.4, 0.6), 0.01, Util.randomColor(new Random()), Vector.createFromRect(0.0000001, 0), this);
+//        new Mass(Vector.createFromRect(0.6, 0.4), 0.01, Util.randomColor(new Random()), 2, this);
         // Make lots of masses
-//        for(double i = 0 ; i <= 1 ; i += 0.2) {
-//            new Mass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4),
-//            		(Math.random() / 30) + 0.01, Util.randomColor(new Random()),
-//            		1, this);
-//        }
+        for(double i = 0 ; i <= 1 ; i += 0.2) {
+            new Mass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4),
+            		(Math.random() / 30) + 0.01, Util.randomColor(new Random()),
+            		1, this);
+        }
     }
     
     
