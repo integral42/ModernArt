@@ -14,11 +14,11 @@ public class Mass{
     //Adjusted for screen size but still between 0 and 1
     private double width, height;
     private double mass;
-    protected double density;
+    private double density;
     /** Some Vector in component form for Position (Displacement) */
     private Vector position;
     /** Some Vector in component form for Velocity */
-    protected Vector velocity;
+    private Vector velocity;
     /** Some Vector in component form for Acceleration */
     private Vector acceleration;
     /** Some Vector in component form for Net Force */
@@ -26,15 +26,13 @@ public class Mass{
     private Color color;
     
     //----------Constructors-----------//
-    /**
-     * Forms Basis of all other constructors
-     */
+    /** Forms Basis of all other constructors */
     public Mass(Vector position, double inputWidth, double inputHeight){
         this.position = position;
         this.inputWidth = inputWidth;
         this.inputHeight = inputHeight;
         
-        density = 1.02;
+        density = 1;
         mass = inputWidth * inputHeight * density;
         virtualWidth = inputWidth;
         virtualHeight = inputHeight;
@@ -44,7 +42,7 @@ public class Mass{
         netForce = new Vector();
     }
     
-    /** No Motion with color and place */
+    /** Color and place */
     public Mass(Vector position, double size, Color color, Window location){
         this(position, size, size);
         
@@ -52,7 +50,7 @@ public class Mass{
         location.addToMasses(this);
     }
     
-    /** Fully Operational */
+    /** Velocity, color and place */
     public Mass(Vector position, double size, Color color, Vector velocity, Window location){
         this(position, size, color, location);
         if(velocity.isZero()) {
@@ -63,7 +61,14 @@ public class Mass{
         }
     }
     
-    //------------------------Methods----------------------//
+    /** Density, color and place */
+    public Mass(Vector position, double size, Color color, double density, Window location){
+        this(position, size, color, location);
+
+        this.density = density;
+    }
+    
+    //------------------------Methods----------------------//  
     /** Reset Size
      * @param w the width of the real screen
      * @param h the height of the real screen */
@@ -72,9 +77,9 @@ public class Mass{
     	height = inputHeight  * Window.FRAME_Y / h;
     }
     
-    /** OK physics for now */
+    /** Only Refers to the object it self and how it moves
+     * to be run at the end of a cycle */
     public void physics() {
-        mass = width * height * density;
         //F = ma implementation
         if(mass > Util.sq(MIN_LENGTH)) {
         	acceleration = netForce.scaleBy(1 / mass);
@@ -83,47 +88,39 @@ public class Mass{
         velocity = velocity.addWith(acceleration);
     	position = position.addWith(velocity);
 
-        //Controls Sizes below 0
-    	if(virtualWidth > MIN_LENGTH) {
-    		inputWidth = virtualWidth;
-    	}
-    	else {
-    		inputWidth = MIN_LENGTH; 
-    	}
-    	if(virtualHeight > MIN_LENGTH) {
-    		inputHeight = virtualHeight;
-    	}
-    	else {
-    		inputHeight = MIN_LENGTH;
-    	}
+        mass = width * height * density;
+    	netForce = new Vector();
     }
     
     /** collision between rectangles */
-    public void collideWith(Mass mR) {
-        if(mR != this) {
+    public void collideWith(Mass m) {
+        if(m != this) {
             if(           		/*Bottom Left*/
-            	(position.x + width >= mR.position.x &&
-            		position.x + width <= mR.position.x + (mR.width / 2) &&
-                	position.y + height >= mR.position.y &&
-               		position.y + height <= mR.position.y + (mR.height / 2))
+            	(position.x + width >= m.position.x &&
+            		position.x + width <= m.position.x + (m.width / 2) &&
+                	position.y + height >= m.position.y &&
+               		position.y + height <= m.position.y + (m.height / 2))
                	||				/*Top Right*/
-               	(position.x <= mR.position.x + mR.width &&
-               		position.x + (width / 2) >= mR.position.x + mR.width &&
-        			position.y <= mR.position.y + mR.height &&
-        			position.y + (height / 2) >= mR.position.y + mR.height)	
+               	(position.x <= m.position.x + m.width &&
+               		position.x + (width / 2) >= m.position.x + m.width &&
+        			position.y <= m.position.y + m.height &&
+        			position.y + (height / 2) >= m.position.y + m.height)	
             	||				/*Bottom Right*/
-        		(position.x <= mR.position.x + mR.width &&
-                	position.x + (width / 2) >= mR.position.x + mR.width &&
-                	position.y + height >= mR.position.y &&
-                   	position.y + height <= mR.position.y + (mR.height / 2))
+        		(position.x <= m.position.x + m.width &&
+                	position.x + (width / 2) >= m.position.x + m.width &&
+                	position.y + height >= m.position.y &&
+                   	position.y + height <= m.position.y + (m.height / 2))
                 ||				/*Top Left*/
-                (position.x + width >= mR.position.x &&
-                	position.x + width <= mR.position.x + (mR.width / 2) &&
-                	position.y <= mR.position.y + mR.height &&
-                	position.y + (height / 2) >= mR.position.y + mR.height)
+                (position.x + width >= m.position.x &&
+                	position.x + width <= m.position.x + (m.width / 2) &&
+                	position.y <= m.position.y + m.height &&
+                	position.y + (height / 2) >= m.position.y + m.height)
             																) {
-            	velocity.x = -velocity.x;
-            	velocity.y = -velocity.y;
+            	final Vector positionDifference = position.subtractWith(m.position);
+            	final Vector velocityDifference = velocity.subtractWith(m.velocity);
+            	final double massConstant = 2 * m.mass / (mass + m.mass);
+            	final double speedConstant = velocityDifference.dotProduct(positionDifference) / Util.sq(positionDifference.norm());
+            	velocity = velocity.subtractWith(positionDifference.scaleBy(massConstant * speedConstant));
             }
         }
     }
@@ -153,22 +150,59 @@ public class Mass{
     public void grow() {
     	virtualWidth += Window.EPSILON;
     	virtualHeight += Window.EPSILON;
+        //Controls Sizes below 0
+    	if(virtualWidth > MIN_LENGTH) {
+    		inputWidth = virtualWidth;
+    	}
+    	else {
+    		inputWidth = MIN_LENGTH; 
+    	}
+    	if(virtualHeight > MIN_LENGTH) {
+    		inputHeight = virtualHeight;
+    	}
+    	else {
+    		inputHeight = MIN_LENGTH;
+    	}
     }
     
     /** Decreases Width and Length by some small amount */
     public void shrink() {
         virtualWidth -= Window.EPSILON;
     	virtualHeight -= Window.EPSILON;
+        //Controls Sizes below 0
+    	if(virtualWidth > MIN_LENGTH) {
+    		inputWidth = virtualWidth;
+    	}
+    	else {
+    		inputWidth = MIN_LENGTH; 
+    	}
+    	if(virtualHeight > MIN_LENGTH) {
+    		inputHeight = virtualHeight;
+    	}
+    	else {
+    		inputHeight = MIN_LENGTH;
+    	}
+    }
+    
+    /** Resets location if it glitches */
+    public void resetPosition() {
+    	position = Vector.createFromRect((Math.random()/ 5) + 0.4, (Math.random()/ 5) + 0.4);
+    }
+    
+    /** Set Velocity and netForce to 0 */
+    public void freeze() {
+    	velocity = new Vector();
+    	netForce = new Vector();
     }
     
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
      * adds to netForce
      */
-    public void gravity(Mass mR) {
-    	if(this != mR){
-    		final double weight = Window.G * mass * mR.mass / Util.sq(position.distanceWith(mR.position));
-    		final double theta = position.angleWith(mR.position);
+    public void gravity(Mass m) {
+    	if(this != m) {
+    		final double weight = Window.G * mass * m.mass / Util.sq(position.distanceWith(m.position));
+    		final double theta = position.angleWith(m.position);
     		netForce = netForce.addWith(Vector.createFromPolar(weight, theta));
     	}
     }

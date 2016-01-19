@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Key Detection
  * @author Connor Lehmacher
  */
-public class MyKeyListener implements KeyListener{
+public class KeyBoard implements KeyListener{
 	//----------Fields----------//
 	/**
 	 * which keys are currently pressed down
@@ -20,7 +20,7 @@ public class MyKeyListener implements KeyListener{
 	/**
 	 * Default Constructor makes keysPressed get as many falses as in the length keys	
 	 */
-	public MyKeyListener() {
+	public KeyBoard() {
 		super(); 
 		for(int i = 0; i < keys.size(); i++){
 			keysPressed.add(false);

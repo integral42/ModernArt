@@ -9,7 +9,8 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import listening.MyKeyListener;
+import listening.KeyBoard;
+import listening.Mouse;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame {
@@ -20,22 +21,24 @@ public class Window extends JFrame {
     final static int FRAME_Y = 700;
     /** Padding for window size: X
      * ElCapitan: 0, Windows7: 8  */   
-    final static int PADDING_X = 0;
+    final static int PADDING_X = 8;
     /** Padding for window size: Y
      * ElCapitan: 23, Windows7: 30  */ 
-    final static int PADDING_Y = 23;
+    final static int PADDING_Y = 30;
     /** Initial Speed */
     final static double INITIAL_SPEED = 0/*0.000025*/;
     /** Small amount for growth */
-    final static double EPSILON = 0.0000001;
-    /** Gravitational Constant of the Universe decreased by 1000 */
-    final static double G = 6.67408e-16;
+    final static double EPSILON = 0.00001;
+    /** Gravitational Constant of the Universe increased by 10 */
+    final static double G = 6.67408e-10;
     
     //Double Buffering
     private Image photo;
     private Graphics dbg;
    
-    MyKeyListener m;
+    Mouse m;
+    boolean mousePressed;
+    KeyBoard k;
     ArrayList<Boolean> keysPressed;
     ArrayList<Mass> masses;
     Timer t;
@@ -50,18 +53,23 @@ public class Window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.BLACK);
         
-        m = new MyKeyListener();
-        addKeyListener(m);
+        m = new Mouse();
+        addMouseListener(m);
         
+        k = new KeyBoard();
+        addKeyListener(k);       
         keysPressed = new ArrayList<Boolean>();
+        
         masses = new ArrayList<Mass>();
         
-        new Mass(Vector.createFromRect(0.2, 0.7), 0.01, Util.randomColor(new Random()), this);
-        new Mass(Vector.createFromRect(0.7, 0.2), 0.01, Util.randomColor(new Random()), this);
+//        new Mass(Vector.createFromRect(0.4, 0.6), 0.01, Util.randomColor(new Random()), Vector.createFromRect(0.0000001, 0), this);
+//        new Mass(Vector.createFromRect(0.6, 0.4), 0.01, Util.randomColor(new Random()), 2, this);
         // Make lots of masses
-        //for(double i = 0 ; i <= 1 ; i += 0.05) {
-        //    new PointMass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4), (Math.random() / 30), Util.randomColor(new Random()), this);
-        //}
+        for(double i = 0 ; i <= 1 ; i += 0.2) {
+            new Mass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4),
+            		(Math.random() / 30) + 0.01, Util.randomColor(new Random()),
+            		1, this);
+        }
     }
     
     
@@ -69,22 +77,30 @@ public class Window extends JFrame {
     /** Logic loop */
     public void run() {
     	while(true) {
-    		keysPressed = m.getKeysPressed();
+    		keysPressed = k.getKeysPressed();
+    		mousePressed = m.getMousePressed();
             //Moving
             masses.forEach(r -> {
-            	r.edgeBounce();
-            	r.physics();
             	r.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
+            	r.edgeBounce();
             	masses.forEach(r1 -> {
             		r.collideWith(r1);
             		r.gravity(r1);
             	});
-            	if(keysPressed.get(MyKeyListener.UP)){
+            	if(keysPressed.get(KeyBoard.UP)) {
             		r.grow();
             	}
-            	if(keysPressed.get(MyKeyListener.DOWN)){
+            	if(keysPressed.get(KeyBoard.DOWN)) {
             		r.shrink();
             	}
+            	if(keysPressed.get(KeyBoard.SPACE)) {
+            		r.resetPosition();
+            	}
+            	if(mousePressed) {
+            		r.freeze();
+            	}
+            	
+            	r.physics();
             });
     	}
     }
