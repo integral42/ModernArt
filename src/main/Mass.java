@@ -1,5 +1,6 @@
 package main;
 
+
 import java.awt.Color;
 /**
  * Movable Colorful Rectangle
@@ -22,7 +23,7 @@ public class Mass{
     /** Some Vector in component form for Acceleration */
     private Vector acceleration;
     /** Some Vector in component form for Net Force */
-    private Vector netForce;
+    Vector netForce;
     private Color color;
     
     //----------Constructors-----------//
@@ -54,7 +55,7 @@ public class Mass{
     public Mass(Vector position, double size, Color color, Vector velocity, Window location){
         this(position, size, color, location);
         if(velocity.isZero()) {
-        	this.velocity = Vector.createFromPolar(Window.INITIAL_SPEED, Math.random() * Math.PI * 2);
+        	this.velocity = Vector.createFromPolar(0 /* 250 * Window.LAG */, Math.random() * Math.PI * 2);
         }
         else {
         	this.velocity = velocity;
@@ -148,8 +149,8 @@ public class Mass{
     
     /** Increases Width and Length by some small amount */
     public void grow() {
-    	virtualWidth += Window.EPSILON;
-    	virtualHeight += Window.EPSILON;
+    	virtualWidth += Window.LAG;
+    	virtualHeight += Window.LAG;
         //Controls Sizes below 0
     	if(virtualWidth > MIN_LENGTH) {
     		inputWidth = virtualWidth;
@@ -167,8 +168,8 @@ public class Mass{
     
     /** Decreases Width and Length by some small amount */
     public void shrink() {
-        virtualWidth -= Window.EPSILON;
-    	virtualHeight -= Window.EPSILON;
+        virtualWidth -= Window.LAG;
+    	virtualHeight -= Window.LAG;
         //Controls Sizes below 0
     	if(virtualWidth > MIN_LENGTH) {
     		inputWidth = virtualWidth;
@@ -184,9 +185,11 @@ public class Mass{
     	}
     }
     
-    /** Resets location if it glitches */
+    /** Resets location if it glitches
+     * also resets velocity */
     public void resetPosition() {
-    	position = Vector.createFromRect((Math.random()/ 5) + 0.4, (Math.random()/ 5) + 0.4);
+    	position = Vector.createFromRect((Math.random()/ 2) + 0.25, (Math.random()/ 2) + 0.25);
+    	freeze();
     }
     
     /** Set Velocity and netForce to 0 */

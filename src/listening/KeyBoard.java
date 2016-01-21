@@ -49,9 +49,7 @@ public class KeyBoard implements KeyListener{
     @Override
     public void keyTyped(KeyEvent e) {}
     
-    /**
-     * passes the keyPressed information
-     */
+    /** passes the keyPressed information */
     public ArrayList<Boolean> getKeysPressed() {
         return keysPressed;
     }
@@ -60,25 +58,26 @@ public class KeyBoard implements KeyListener{
     
     //----------STATIC------------//
     
-	/**
-	 * all the keys to be tested
-	 */
+	/** all the keys to be tested */
 	static ArrayList<Integer> keys = new ArrayList<Integer>();
     //Marks
     public static final int SPACE = 0;
-    public static final int LEFT = 1;
-    public static final int RIGHT = 2;
-    public static final int UP = 3;
-    public static final int DOWN = 4;
-    
-    /**
-     * Adds keys to be tested to "keys"
-     */
+    public static final int UP = 1;
+    public static final int DOWN = 2;
+    public static final int W = 3;
+    public static final int A = 4;
+    public static final int S = 5;
+    public static final int D = 6;
+    /** Adds keys to be tested to "keys" */
 	static {
 		keys.add(KeyEvent.VK_SPACE);
 		keys.add(KeyEvent.VK_LEFT);
 		keys.add(KeyEvent.VK_RIGHT);
 		keys.add(KeyEvent.VK_UP);
 		keys.add(KeyEvent.VK_DOWN);
+		keys.add(KeyEvent.VK_W);
+		keys.add(KeyEvent.VK_A);
+		keys.add(KeyEvent.VK_S);
+		keys.add(KeyEvent.VK_D);
 	}
 }

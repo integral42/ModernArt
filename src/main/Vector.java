@@ -13,10 +13,7 @@ public class Vector {
 	}
 	
 	/** Default; 0 */
-	public Vector() {
-		x = 0;
-		y = 0;
-	}
+	public Vector() {}
 	
 	//--------------Methods----------------//
     /** find the size of a vector */
@@ -102,19 +99,16 @@ public class Vector {
     public boolean isZero() {
     	return x == 0 && y == 0;
     }
+    
     //-----------------STATIC------------//
-    /**
-     * Creates a vector based on polar form
-     */
+    /** Creates a vector based on polar form */
     public static Vector createFromPolar(double norm, double theta) {
     	final double x = norm * Math.cos(theta);
     	final double y = norm * Math.sin(theta);
     	return new Vector(x, y);
     }
     
-    /**
-     * Creates a vector based on rectangular form
-     */
+    /** Creates a vector based on rectangular form */
     public static Vector createFromRect(double x, double y) {
     	return new Vector(x, y);
     }
