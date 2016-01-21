@@ -77,9 +77,9 @@ public class Window extends JFrame {
         
         masses = new ArrayList<Mass>();
         
-        new Mass(Vector.createFromRect(0.4, 0.6), 0.01, Util.randomColor(new Random()), Vector.createFromRect(0.0000001, 0), this);
-        new Mass(Vector.createFromRect(0.6, 0.4), 0.01, Util.randomColor(new Random()), 2, this);
-        new Controlled(Vector.createFromRect(0.2, 0.2), 0.01, Util.randomColor(new Random()), this);
+        new Mass(Vector.createFromRect(0.4, 0.6), 0.02, Util.randomColor(new Random()), Vector.createFromRect(0.0000001, 0), this);
+        new Mass(Vector.createFromRect(0.6, 0.4), 0.02, Util.randomColor(new Random()), 2, this);
+        new Controlled(Vector.createFromRect(0.2, 0.2), 0.02, Util.randomColor(new Random()), this);
          //Make lots of masses
 //        for(double i = 0 ; i <= 1 ; i += 0.2) {
 //            new Mass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4),
@@ -103,10 +103,10 @@ public class Window extends JFrame {
             		r.collideWith(r1);
             		r.gravity(r1);
             	});
-            	if(keysPressed.get(KeyBoard.UP)) {
+            	if(keysPressed.get(KeyBoard.LEFT)) {
             		r.grow();
             	}
-            	if(keysPressed.get(KeyBoard.DOWN)) {
+            	if(keysPressed.get(KeyBoard.RIGHT)) {
             		r.shrink();
             	}
             	if(keysPressed.get(KeyBoard.SPACE)) {
@@ -130,36 +130,29 @@ public class Window extends JFrame {
             if(keysPressed.get(KeyBoard.D)) {
             	controlled.move(KeyBoard.D);
             }
+        repaint();
     	}
     }
     
-    /** Double buffering */
+    /** Paint Loop */
     @Override
     public void paint(Graphics g) {
-    	final int frameX =  (int)(this.getContentPane().getWidth() + PADDING_X + 1);
-        final int frameY =  (int)(this.getContentPane().getHeight() + PADDING_Y + 1);
-        photo = createImage(frameX, frameY);
-        dbg = photo.getGraphics();
-        paintComponent(dbg);
-        g.drawImage(photo, 0, 0, this);
-    }
-    
-    /**
-     * paint loop
-     * draws rectangles/people
-     */
-    public void paintComponent(Graphics g) {   
+    	//Background
+//    	final int frameX =  (int)(this.getContentPane().getWidth() + PADDING_X + 1);
+//        final int frameY =  (int)(this.getContentPane().getHeight() + PADDING_Y + 1);
+    	g.setColor(Color.GREEN);
+    	g.drawRect(0, 0, 100, 100);
+    	repaint();
         //Draws all the rectangles
-        for (Mass mR : masses) {
+        masses.forEach(mR -> {
             g.setColor(mR.getColor());
             final int realX =  (int)(this.getContentPane().getWidth() * mR.getPosition().x + PADDING_X);
             final int realY =  (int)(this.getContentPane().getHeight() * mR.getPosition().y + PADDING_Y);
             final int realWidth =  (int)(this.getContentPane().getWidth() * mR.getWidth());
             final int realHeight =  (int)(this.getContentPane().getHeight() * mR.getHeight());
             g.drawRect(realX, realY, realWidth, realHeight);
-        }
-        repaint();
-    }  
+        });
+    }
     
     /** adds MyRectangle objects to rectangles */
     public void addToMasses(Mass myRect) {

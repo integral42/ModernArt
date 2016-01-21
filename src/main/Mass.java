@@ -2,6 +2,7 @@ package main;
 
 
 import java.awt.Color;
+import java.awt.Graphics;
 /**
  * Movable Colorful Rectangle
  * @author Connor Lehmacher
@@ -198,10 +199,8 @@ public class Mass{
     	netForce = new Vector();
     }
     
-    /**
-     * Physics-Gravity for any 2 bodies with mass and distance
-     * adds to netForce
-     */
+    /** Physics-Gravity for any 2 bodies with mass and distance
+     * adds to netForce */
     public void gravity(Mass m) {
     	if(this != m) {
     		final double weight = Window.G * mass * m.mass / Util.sq(position.distanceWith(m.position));
@@ -210,6 +209,10 @@ public class Mass{
     	}
     }
     
+    /** Draws the Mass; To be used in a paint loop */
+    public void draw(Graphics g) {
+    	
+    }
     //---------Getter Methods----------//
     /** Color Passer */
     public Color getColor(){

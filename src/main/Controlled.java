@@ -16,7 +16,7 @@ public class Controlled extends Mass{
 	//-----------------Methods-----------------//
 	/** Accelerates in a direction based on an argument */
 	public void move(int mark) {
-		final double aAmount = Window.LAG / 80000000;
+		final double aAmount = Window.LAG / 10000000;
 		if(mark == KeyBoard.W) {
 			netForce = netForce.addWith(Vector.createFromRect(0, -aAmount));
 		}
