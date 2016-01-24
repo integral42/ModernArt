@@ -1,8 +1,8 @@
 package main;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -46,9 +46,7 @@ public class Window extends JFrame {
     /** Gravitational Constant of the Universe increased by 10 */
     final static double G = 6.67408e-10;
     
-    //Double Buffering
-    private Image photo;
-    private Graphics dbg;
+    private int loopCount = 0;
    
     Mouse m;
     boolean mousePressed;
@@ -66,7 +64,6 @@ public class Window extends JFrame {
         //Set up how the frame works
         setSize(FRAME_X , FRAME_Y);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(Color.BLACK);
         
         m = new Mouse();
         addMouseListener(m);
@@ -93,6 +90,7 @@ public class Window extends JFrame {
     /** Logic loop */
     public void run() {
     	while(true) {
+    		loopCount++;
     		keysPressed = k.getKeysPressed();
     		mousePressed = m.getMousePressed();
             //Moving
@@ -130,28 +128,38 @@ public class Window extends JFrame {
             if(keysPressed.get(KeyBoard.D)) {
             	controlled.move(KeyBoard.D);
             }
-        repaint();
+        draw();
     	}
     }
     
     /** Paint Loop */
-    @Override
-    public void paint(Graphics g) {
-    	//Background
-//    	final int frameX =  (int)(this.getContentPane().getWidth() + PADDING_X + 1);
-//        final int frameY =  (int)(this.getContentPane().getHeight() + PADDING_Y + 1);
-    	g.setColor(Color.GREEN);
-    	g.drawRect(0, 0, 100, 100);
-    	repaint();
-        //Draws all the rectangles
-        masses.forEach(mR -> {
-            g.setColor(mR.getColor());
-            final int realX =  (int)(this.getContentPane().getWidth() * mR.getPosition().x + PADDING_X);
-            final int realY =  (int)(this.getContentPane().getHeight() * mR.getPosition().y + PADDING_Y);
-            final int realWidth =  (int)(this.getContentPane().getWidth() * mR.getWidth());
-            final int realHeight =  (int)(this.getContentPane().getHeight() * mR.getHeight());
-            g.drawRect(realX, realY, realWidth, realHeight);
-        });
+    public void draw() {
+    	BufferStrategy bf = this.getBufferStrategy();
+    	Graphics g = null;
+     
+    	try {
+    		g = bf.getDrawGraphics();
+            // Draws all the rectangles
+            for (Mass mR : masses) {
+                g.setColor(mR.getColor());
+                final int realX =  (int)(this.getContentPane().getWidth() * mR.getPosition().x + PADDING_X);
+                final int realY =  (int)(this.getContentPane().getHeight() * mR.getPosition().y + PADDING_Y);
+                final int realWidth =  (int)(this.getContentPane().getWidth() * mR.getWidth());
+                final int realHeight =  (int)(this.getContentPane().getHeight() * mR.getHeight());
+                g.drawRect(realX, realY, realWidth, realHeight);
+                g.drawString(Integer.toString(loopCount), 100, 100);
+            }
+     
+    	} finally {
+    		// Good Idea
+    		g.dispose();
+    	}
+     
+    	// Shows the contents of the back-buffer on the screen.
+    	bf.show();
+     
+    	// Draw Command
+        Toolkit.getDefaultToolkit().sync();	
     }
     
     /** adds MyRectangle objects to rectangles */

@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Color;
+
 import javax.swing.SwingUtilities;
 
 /**
@@ -15,6 +17,8 @@ public class Main {
     	try {
     		SwingUtilities.invokeAndWait(() -> w.setVisible(true));
     	} catch (Exception e) {}
+    	w.createBufferStrategy(2);
+    	w.setBackground(Color.BLACK);
     	w.run();
     }
 }
