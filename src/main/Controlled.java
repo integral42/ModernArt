@@ -2,8 +2,6 @@ package main;
 
 import java.awt.Color;
 
-import listening.KeyBoard;
-
 public class Controlled extends Mass{
 	//----------------Constructors------------------//
 	/** Acts the same as parallel Mass constructor */
@@ -17,18 +15,24 @@ public class Controlled extends Mass{
 	/** Accelerates in a direction based on an argument */
 	public void move(int mark) {
 		final double aAmount = Window.LAG / 10000000;
-		if(mark == KeyBoard.W) {
+		if(mark == UP) {
 			netForce = netForce.addWith(Vector.createFromRect(0, -aAmount));
 		}
-		if(mark == KeyBoard.A) {
+		if(mark == LEFT) {
 			netForce = netForce.addWith(Vector.createFromRect(-aAmount, 0));
 		}
-		if(mark == KeyBoard.S) {
+		if(mark == DOWN) {
 			netForce = netForce.addWith(Vector.createFromRect(0, aAmount));
 		}
-		if(mark == KeyBoard.D) {
+		if(mark == RIGHT) {
 			netForce = netForce.addWith(Vector.createFromRect(aAmount, 0));
 		}
 		
 	}
+	
+	//-------------Marks-Static--------//
+	final static int UP = 0;
+	final static int LEFT = 1;
+	final static int DOWN = 2;
+	final static int RIGHT = 3;
 }

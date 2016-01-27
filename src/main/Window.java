@@ -42,7 +42,7 @@ public class Window extends JFrame {
     	}
     }
     /** Lag Constant */
-    final static double LAG = 0.0000001;
+    final static double LAG = 1;
     /** Gravitational Constant of the Universe increased by 10 */
     final static double G = 6.67408e-10;
     
@@ -117,16 +117,16 @@ public class Window extends JFrame {
             	r.physics();
             });
             if(keysPressed.get(KeyBoard.W)) {
-            	controlled.move(KeyBoard.W);
+            	controlled.move(Controlled.UP);
             }
             if(keysPressed.get(KeyBoard.A)) {
-            	controlled.move(KeyBoard.A);
+            	controlled.move(Controlled.LEFT);
             }
             if(keysPressed.get(KeyBoard.S)) {
-            	controlled.move(KeyBoard.S);
+            	controlled.move(Controlled.DOWN);
             }
             if(keysPressed.get(KeyBoard.D)) {
-            	controlled.move(KeyBoard.D);
+            	controlled.move(Controlled.RIGHT);
             }
         draw();
     	}
@@ -134,11 +134,11 @@ public class Window extends JFrame {
     
     /** Paint Loop */
     public void draw() {
-    	BufferStrategy bf = this.getBufferStrategy();
+    	BufferStrategy b = this.getBufferStrategy();
     	Graphics g = null;
      
-    	try {
-    		g = bf.getDrawGraphics();
+    	//try {
+    		g = b.getDrawGraphics();
             // Draws all the rectangles
             for (Mass mR : masses) {
                 g.setColor(mR.getColor());
@@ -147,19 +147,18 @@ public class Window extends JFrame {
                 final int realWidth =  (int)(this.getContentPane().getWidth() * mR.getWidth());
                 final int realHeight =  (int)(this.getContentPane().getHeight() * mR.getHeight());
                 g.drawRect(realX, realY, realWidth, realHeight);
-                g.drawString(Integer.toString(loopCount), 100, 100);
             }
-     
-    	} finally {
+            g.drawString(Integer.toString(loopCount), 100, 100);
+    	//} finally {
     		// Good Idea
     		g.dispose();
-    	}
+    	//}
      
     	// Shows the contents of the back-buffer on the screen.
-    	bf.show();
+    	b.show();
      
     	// Draw Command
-        Toolkit.getDefaultToolkit().sync();	
+        //Toolkit.getDefaultToolkit().sync();	
     }
     
     /** adds MyRectangle objects to rectangles */
