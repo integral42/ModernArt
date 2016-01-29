@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 import listening.KeyBoard;
 import listening.Mouse;
@@ -50,13 +49,20 @@ public class Window extends JFrame {
     private Image photo;
     private Graphics dbg;
    
+    /** Modified Mouse Listener */
     Mouse m;
+    /** if the mouse is pressed */
     boolean mousePressed;
+    /** Modified KeyBoard Listener */
     KeyBoard k;
-    ArrayList<Boolean> keysPressed;
-    ArrayList<Mass> masses;
-    Timer t;
-    Controlled controlled;
+    /** if the keys are pressed */
+    ArrayList<Boolean> keysPressed = new ArrayList<Boolean>();
+    /** all the masses */
+    ArrayList<Mass> masses = new ArrayList<Mass>();
+    /** controllable mass */
+    Controlled c;
+    /** the controllable masses directions */
+    ArrayList<Direction> cDir = new ArrayList<Direction>();
 
     //----------Constructor--------//
     /** Makes Frame Makes objects */
@@ -72,14 +78,11 @@ public class Window extends JFrame {
         addMouseListener(m);
         
         k = new KeyBoard();
-        addKeyListener(k);       
-        keysPressed = new ArrayList<Boolean>();
+        addKeyListener(k);
         
-        masses = new ArrayList<Mass>();
-        
-        new Mass(Vector.createFromRect(0.4, 0.6), 0.01, Util.randomColor(new Random()), Vector.createFromRect(0.0000001, 0), this);
-        new Mass(Vector.createFromRect(0.6, 0.4), 0.01, Util.randomColor(new Random()), 2, this);
-        new Controlled(Vector.createFromRect(0.2, 0.2), 0.01, Util.randomColor(new Random()), this);
+        new Mass(Vector.createFromRect(0.4, 0.6), 0.02, Util.randomColor(new Random()), Vector.createFromRect(0.0000001, 0), this);
+        new Mass(Vector.createFromRect(0.6, 0.4), 0.02, Util.randomColor(new Random()), 2, this);
+        new Controlled(Vector.createFromRect(0.2, 0.2), 0.02, Util.randomColor(new Random()), this);
          //Make lots of masses
 //        for(double i = 0 ; i <= 1 ; i += 0.2) {
 //            new Mass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4),
@@ -96,40 +99,41 @@ public class Window extends JFrame {
     		keysPressed = k.getKeysPressed();
     		mousePressed = m.getMousePressed();
             //Moving
-            masses.forEach(r -> {
-            	r.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
-            	r.edgeBounce();
-            	masses.forEach(r1 -> {
-            		r.collideWith(r1);
-            		r.gravity(r1);
+            masses.forEach(m -> {
+            	m.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
+            	m.edgeBounce();
+            	masses.forEach(m1 -> {
+            		m1.collideWith(m);
+            		m1.gravity(m);
             	});
-            	if(keysPressed.get(KeyBoard.UP)) {
-            		r.grow();
+            	if(keysPressed.get(KeyBoard.LEFT)) {
+            		m.grow();
             	}
-            	if(keysPressed.get(KeyBoard.DOWN)) {
-            		r.shrink();
+            	if(keysPressed.get(KeyBoard.RIGHT)) {
+            		m.shrink();
             	}
             	if(keysPressed.get(KeyBoard.SPACE)) {
-            		r.resetPosition();
+            		m.resetPosition();
             	}
             	if(mousePressed) {
-            		r.freeze();
+            		m.freeze();
             	}
             	
-            	r.physics();
+            	m.physics();
             });
             if(keysPressed.get(KeyBoard.W)) {
-            	controlled.move(KeyBoard.W);
-            }
+            	cDir.add(Direction.UP);
+            } else cDir.remove(Direction.UP);
             if(keysPressed.get(KeyBoard.A)) {
-            	controlled.move(KeyBoard.A);
-            }
+            	cDir.add(Direction.LEFT);
+            } else cDir.remove(Direction.LEFT);
             if(keysPressed.get(KeyBoard.S)) {
-            	controlled.move(KeyBoard.S);
-            }
+            	cDir.add(Direction.DOWN);
+            } else cDir.remove(Direction.DOWN);
             if(keysPressed.get(KeyBoard.D)) {
-            	controlled.move(KeyBoard.D);
-            }
+            	cDir.add(Direction.RIGHT);
+            } else cDir.remove(Direction.RIGHT);
+            c.move(cDir);
     	}
     }
     
@@ -150,14 +154,9 @@ public class Window extends JFrame {
      */
     public void paintComponent(Graphics g) {   
         //Draws all the rectangles
-        for (Mass mR : masses) {
-            g.setColor(mR.getColor());
-            final int realX =  (int)(this.getContentPane().getWidth() * mR.getPosition().x + PADDING_X);
-            final int realY =  (int)(this.getContentPane().getHeight() * mR.getPosition().y + PADDING_Y);
-            final int realWidth =  (int)(this.getContentPane().getWidth() * mR.getWidth());
-            final int realHeight =  (int)(this.getContentPane().getHeight() * mR.getHeight());
-            g.drawRect(realX, realY, realWidth, realHeight);
-        }
+    	masses.forEach(m -> {
+        	m.draw(g);
+        });
         repaint();
     }  
     
@@ -168,7 +167,7 @@ public class Window extends JFrame {
     
     /** Defines Controlled Mass */
     public void defineControlled(Controlled controlled) {
-    	this.controlled = controlled;
+    	this.c = controlled;
     }
     
 }

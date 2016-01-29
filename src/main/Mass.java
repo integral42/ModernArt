@@ -2,6 +2,7 @@ package main;
 
 
 import java.awt.Color;
+import java.awt.Graphics;
 /**
  * Movable Colorful Rectangle
  * @author Connor Lehmacher
@@ -14,6 +15,9 @@ public class Mass{
     private double virtualWidth, virtualHeight;
     //Adjusted for screen size but still between 0 and 1
     private double width, height;
+    //Adjusted for screen size (full size)
+    protected int realX, realY;
+    protected int realWidth, realHeight;
     private double mass;
     private double density;
     /** Some Vector in component form for Position (Displacement) */
@@ -25,6 +29,7 @@ public class Mass{
     /** Some Vector in component form for Net Force */
     Vector netForce;
     private Color color;
+    Window location;
     
     //----------Constructors-----------//
     /** Forms Basis of all other constructors */
@@ -37,6 +42,7 @@ public class Mass{
         mass = inputWidth * inputHeight * density;
         virtualWidth = inputWidth;
         virtualHeight = inputHeight;
+        location = null;
         
         velocity = new Vector();
         acceleration = new Vector();
@@ -49,6 +55,7 @@ public class Mass{
         
         this.color = color;
         location.addToMasses(this);
+        this.location = location;
     }
     
     /** Velocity, color and place */
@@ -210,24 +217,34 @@ public class Mass{
     	}
     }
     
+    /**Draws Rectangle to simulate the mass */
+    public void draw(Graphics g) {
+        g.setColor(color);
+        realX =  (int)(location.getContentPane().getWidth() * position.x + Window.PADDING_X);
+        realY =  (int)(location.getContentPane().getHeight() * position.y + Window.PADDING_Y);
+        realWidth =  (int)(location.getContentPane().getWidth() * width);
+        realHeight =  (int)(location.getContentPane().getHeight() * height);
+        g.drawRect(realX, realY, realWidth, realHeight);
+    }
+    
     //---------Getter Methods----------//
     /** Color Passer */
-    public Color getColor(){
+    public Color getColor() {
     	return color;
     }
     
     /** Position Passer */
-    public Vector getPosition(){
+    public Vector getPosition() {
     	return position;
     }
     
     /** Width Passer */
-    public double getWidth(){
+    public double getWidth() {
     	return width;
     }
     	
     /** Height Passer */
-    public double getHeight(){
+    public double getHeight() {
     	return height;
     }
     

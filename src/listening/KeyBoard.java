@@ -62,8 +62,8 @@ public class KeyBoard implements KeyListener{
 	static ArrayList<Integer> keys = new ArrayList<Integer>();
     //Marks
     public static final int SPACE = 0;
-    public static final int UP = 1;
-    public static final int DOWN = 2;
+    public static final int LEFT = 1;
+    public static final int RIGHT = 2;
     public static final int W = 3;
     public static final int A = 4;
     public static final int S = 5;
@@ -73,8 +73,6 @@ public class KeyBoard implements KeyListener{
 		keys.add(KeyEvent.VK_SPACE);
 		keys.add(KeyEvent.VK_LEFT);
 		keys.add(KeyEvent.VK_RIGHT);
-		keys.add(KeyEvent.VK_UP);
-		keys.add(KeyEvent.VK_DOWN);
 		keys.add(KeyEvent.VK_W);
 		keys.add(KeyEvent.VK_A);
 		keys.add(KeyEvent.VK_S);
