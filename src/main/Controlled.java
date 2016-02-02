@@ -34,12 +34,23 @@ public class Controlled extends Mass{
 	}
 	
 	/** Draws Lines for the Object */
-	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics g, ArrayList<Direction> marks) {
 		super.draw(g);
 		g.drawOval(realX + 1, realY + 1, realWidth - 2, realHeight - 2);
 		final int midPointX = realX + realWidth / 2;
 		final int midPointY = realY + realHeight / 2;
-		g.drawLine(midPointX, midPointY, 1, 1);
+		if(marks.contains(Direction.UP)) {
+			//TODO
+			g.drawLine(midPointX, midPointY, 1, 1);
+		}
+		if(marks.contains(Direction.LEFT)) {
+			g.drawLine(midPointX, midPointY, 1, 1);
+		}
+		if(marks.contains(Direction.DOWN)) {
+			g.drawLine(midPointX, midPointY, 1, 1);
+		}
+		if(marks.contains(Direction.RIGHT)) {
+			g.drawLine(midPointX, midPointY, 1, 1);
+		}
 	}
 }

@@ -62,7 +62,7 @@ public class Window extends JFrame {
     /** controllable mass */
     Controlled c;
     /** the controllable masses directions */
-    ArrayList<Direction> cDir = new ArrayList<Direction>();
+    ArrayList<Direction> cDirs = new ArrayList<Direction>();
 
     //----------Constructor--------//
     /** Makes Frame Makes objects */
@@ -122,18 +122,18 @@ public class Window extends JFrame {
             	m.physics();
             });
             if(keysPressed.get(KeyBoard.W)) {
-            	cDir.add(Direction.UP);
-            } else cDir.remove(Direction.UP);
+            	Util.addOnce(Direction.UP, cDirs);
+            } else cDirs.remove(Direction.UP);
             if(keysPressed.get(KeyBoard.A)) {
-            	cDir.add(Direction.LEFT);
-            } else cDir.remove(Direction.LEFT);
+            	Util.addOnce(Direction.LEFT, cDirs);
+            } else cDirs.remove(Direction.LEFT);
             if(keysPressed.get(KeyBoard.S)) {
-            	cDir.add(Direction.DOWN);
-            } else cDir.remove(Direction.DOWN);
+            	Util.addOnce(Direction.DOWN, cDirs);	
+            } else cDirs.remove(Direction.DOWN);
             if(keysPressed.get(KeyBoard.D)) {
-            	cDir.add(Direction.RIGHT);
-            } else cDir.remove(Direction.RIGHT);
-            c.move(cDir);
+            	Util.addOnce(Direction.RIGHT, cDirs);
+            } else cDirs.remove(Direction.RIGHT);
+            c.move(cDirs);
     	}
     }
     
@@ -157,6 +157,7 @@ public class Window extends JFrame {
     	masses.forEach(m -> {
         	m.draw(g);
         });
+    	c.draw(g, cDirs);
         repaint();
     }  
     

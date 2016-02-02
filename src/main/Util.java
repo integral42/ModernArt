@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -21,5 +22,11 @@ public class Util {
     public static boolean isNearZero(double x) {
     	final double EPSILON = Double.MIN_NORMAL * 1000000;
     	return x > -EPSILON && x < EPSILON;
+    }
+    
+    public static void addOnce(Object o, ArrayList a) {
+        if(!a.contains(o)) {
+        	a.add(o);
+        }
     }
 }
