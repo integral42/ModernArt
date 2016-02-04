@@ -18,7 +18,7 @@ public class Controlled extends Mass{
 	//-----------------Methods-----------------//
 	/** Accelerates in a direction based on an argument */
 	public void move(ArrayList<Direction> marks) {
-		final double aAmount = Window.LAG / 2000000;
+		final double aAmount = 0.0000000000000000000001 / Window.LAG;
 		if(marks.contains(Direction.UP)) {
 			netForce = netForce.addWith(Vector.createFromRect(0, -aAmount));
 		}
@@ -40,17 +40,16 @@ public class Controlled extends Mass{
 		final int midPointX = realX + realWidth / 2;
 		final int midPointY = realY + realHeight / 2;
 		if(marks.contains(Direction.UP)) {
-			//TODO
-			g.drawLine(midPointX, midPointY, 1, 1);
+			g.drawLine(midPointX, midPointY, midPointX, realY);
 		}
 		if(marks.contains(Direction.LEFT)) {
-			g.drawLine(midPointX, midPointY, 1, 1);
+			g.drawLine(midPointX, midPointY, realX, midPointY);
 		}
 		if(marks.contains(Direction.DOWN)) {
-			g.drawLine(midPointX, midPointY, 1, 1);
+			g.drawLine(midPointX, midPointY, midPointX, realY + realHeight);
 		}
 		if(marks.contains(Direction.RIGHT)) {
-			g.drawLine(midPointX, midPointY, 1, 1);
+			g.drawLine(midPointX, midPointY, realX + realWidth, midPointY);
 		}
 	}
 }

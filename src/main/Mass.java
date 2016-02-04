@@ -30,6 +30,7 @@ public class Mass{
     Vector netForce;
     private Color color;
     Window location;
+    private boolean isColliding = false;
     
     //----------Constructors-----------//
     /** Forms Basis of all other constructors */
@@ -100,9 +101,9 @@ public class Mass{
     	netForce = new Vector();
     }
     
-    /** collision between rectangles */
-    public void collideWith(Mass m) {
-        if(m != this) {
+    public void testColliding(Mass m) {
+    	isColliding = false;
+    	if(m != this) {
             if(           		/*Bottom Left*/
             	(position.x + width >= m.position.x &&
             		position.x + width <= m.position.x + (m.width / 2) &&
@@ -124,12 +125,19 @@ public class Mass{
                 	position.y <= m.position.y + m.height &&
                 	position.y + (height / 2) >= m.position.y + m.height)
             																) {
-            	final Vector positionDifference = position.subtractWith(m.position);
-            	final Vector velocityDifference = velocity.subtractWith(m.velocity);
-            	final double massConstant = 2 * m.mass / (mass + m.mass);
-            	final double speedConstant = velocityDifference.dotProduct(positionDifference) / Util.sq(positionDifference.norm());
-            	velocity = velocity.subtractWith(positionDifference.scaleBy(massConstant * speedConstant));
+            	isColliding = true;
             }
+    	}
+    }
+    
+    /** collision between rectangles */
+    public void collideWith(Mass m) {
+        if(isColliding) {
+        	final Vector positionDifference = position.subtractWith(m.position);
+	        final Vector velocityDifference = velocity.subtractWith(m.velocity);
+	        final double massConstant = 2 * m.mass / (mass + m.mass);
+	        final double speedConstant = velocityDifference.dotProduct(positionDifference) / Util.sq(positionDifference.norm());
+	        velocity = velocity.subtractWith(positionDifference.scaleBy(massConstant * speedConstant));
         }
     }
 
@@ -208,13 +216,20 @@ public class Mass{
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
      * adds to netForce
+     * <b> no Gauss gravity!!! </b>
      */
     public void gravity(Mass m) {
-    	if(this != m) {
+    	if(this != m && !isColliding) {
     		final double weight = Window.G * mass * m.mass / Util.sq(position.distanceWith(m.position));
     		final double theta = position.angleWith(m.position);
     		netForce = netForce.addWith(Vector.createFromPolar(weight, theta));
     	}
+    }
+    
+    /** Friction */
+    public void friction() {
+    	final double normalForce = 9.8 * mass;
+    	netForce = netForce.addWith(Vector.createFromPolar(normalForce * Window.MU, Math.PI + velocity.theta()));
     }
     
     /**Draws Rectangle to simulate the mass */

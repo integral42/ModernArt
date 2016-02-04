@@ -24,9 +24,9 @@ public class Util {
     	return x > -EPSILON && x < EPSILON;
     }
     
-    public static void addOnce(Object o, ArrayList a) {
-        if(!a.contains(o)) {
-        	a.add(o);
+    public static void addDirectionOnce(Direction d, ArrayList<Direction> a) {
+    	if(!a.contains(d)) {
+        	a.add(d);
         }
     }
 }

@@ -41,9 +41,11 @@ public class Window extends JFrame {
     	}
     }
     /** Lag Constant */
-    final static double LAG = 0.0000001;
+    final static double LAG = 0.00000001;
     /** Gravitational Constant of the Universe increased by 10 */
     final static double G = 6.67408e-10;
+    /** Friction Coefficient */
+    final static double MU = 0.5;
     
     //Double Buffering
     private Image photo;
@@ -80,8 +82,8 @@ public class Window extends JFrame {
         k = new KeyBoard();
         addKeyListener(k);
         
-        new Mass(Vector.createFromRect(0.4, 0.6), 0.02, Util.randomColor(new Random()), Vector.createFromRect(0.0000001, 0), this);
-        new Mass(Vector.createFromRect(0.6, 0.4), 0.02, Util.randomColor(new Random()), 2, this);
+        new Mass(Vector.createFromRect(0.4, 0.6), 0.02, Util.randomColor(new Random()), 10, this);
+        //new Mass(Vector.createFromRect(0.6, 0.4), 0.02, Util.randomColor(new Random()), 2, this);
         new Controlled(Vector.createFromRect(0.2, 0.2), 0.02, Util.randomColor(new Random()), this);
          //Make lots of masses
 //        for(double i = 0 ; i <= 1 ; i += 0.2) {
@@ -103,9 +105,12 @@ public class Window extends JFrame {
             	m.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
             	m.edgeBounce();
             	masses.forEach(m1 -> {
-            		m1.collideWith(m);
+            		m1.testColliding(m);
+            		//m1.collideWith(m);
             		m1.gravity(m);
             	});
+            	//Ummmmmm
+            	m.friction();
             	if(keysPressed.get(KeyBoard.LEFT)) {
             		m.grow();
             	}
@@ -118,20 +123,19 @@ public class Window extends JFrame {
             	if(mousePressed) {
             		m.freeze();
             	}
-            	
             	m.physics();
             });
             if(keysPressed.get(KeyBoard.W)) {
-            	Util.addOnce(Direction.UP, cDirs);
+            	Util.addDirectionOnce(Direction.UP, cDirs);
             } else cDirs.remove(Direction.UP);
             if(keysPressed.get(KeyBoard.A)) {
-            	Util.addOnce(Direction.LEFT, cDirs);
+            	Util.addDirectionOnce(Direction.LEFT, cDirs);
             } else cDirs.remove(Direction.LEFT);
             if(keysPressed.get(KeyBoard.S)) {
-            	Util.addOnce(Direction.DOWN, cDirs);	
+            	Util.addDirectionOnce(Direction.DOWN, cDirs);	
             } else cDirs.remove(Direction.DOWN);
             if(keysPressed.get(KeyBoard.D)) {
-            	Util.addOnce(Direction.RIGHT, cDirs);
+            	Util.addDirectionOnce(Direction.RIGHT, cDirs);
             } else cDirs.remove(Direction.RIGHT);
             c.move(cDirs);
     	}
