@@ -77,7 +77,7 @@ public class Vector {
     
     /** Negative of the Vector */
     public Vector negative() {
-    	return scaleBy(-1);
+    	return createFromPolar(norm(), theta() + Math.PI);
     }
     
     /** Dot Product */
@@ -98,6 +98,10 @@ public class Vector {
     /** true if vector is a zero Vector */
     public boolean isZero() {
     	return x == 0 && y == 0;
+    }
+    
+    public boolean isNearZero() {
+    	return Util.isNearZero(x) && Util.isNearZero(y);
     }
     
     //-----------------STATIC------------//

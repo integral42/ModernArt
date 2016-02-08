@@ -227,9 +227,12 @@ public class Mass{
     }
     
     /** Friction */
-    public void friction() {
-    	final double normalForce = 9.8 * mass;
-    	netForce = netForce.addWith(Vector.createFromPolar(normalForce * Window.MU, Math.PI + velocity.theta()));
+    public void airResitance() {
+    	Vector aR = velocity.scaleBy(0.0000000001).negative();
+    	if(!aR.isZero()) {
+    		netForce = netForce.addWith(aR);
+//    		System.out.println(1);
+    	}
     }
     
     /**Draws Rectangle to simulate the mass */
