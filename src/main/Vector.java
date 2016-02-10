@@ -1,5 +1,8 @@
 package main;
 
+/**
+ * @author Connor Lehmacher
+ */
 public class Vector {
 	//----------Fields----------//
 	// Ze Basic Information   

@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+/**
+ * @author Connor Lehmacher
+ */
 public class Controlled extends Mass{
 	//---------------Fields-------------//
 	

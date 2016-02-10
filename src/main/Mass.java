@@ -145,21 +145,38 @@ public class Mass{
     public void edgeBounce() {
         if(position.x < 0) {
         	velocity.x = -velocity.x;
-            position.x = 0;   
+            position.x = 0;
+            conserveMomentum();
         } 
         if(position.y < 0) {
         	velocity.y = -velocity.y;
-        	position.y = 0;   
+        	position.y = 0;
+            conserveMomentum();
         }        
         if(position.x + width > 1) {
         	velocity.x = -velocity.x;
         	position.x = 1 - width;
+            conserveMomentum();
         }
-        
         if(position.y + height > 1) {
         	velocity.y = -velocity.y;
         	position.y = 1 - height;
+            conserveMomentum();
         }
+    }
+    
+    /** maintain conservation of momentum */
+    private void conserveMomentum() {
+    	final Vector deltaV = velocity.scaleBy(2).negative();
+    	final Vector impulse = deltaV.scaleBy(mass);
+    	double sigmaMass = 0;
+    	//Not sure why the other method (forEach) does not work
+    	for(Mass m : location.masses)
+    		sigmaMass += m.mass;
+    	final Vector averageImpulse = impulse.scaleBy(1 / sigmaMass);
+    	location.masses.forEach(m -> {
+    		m.velocity = m.velocity.addWith(averageImpulse);
+    	});
     }
     
     /** Increases Width and Length by some small amount */
@@ -213,13 +230,18 @@ public class Mass{
     	netForce = new Vector();
     }
     
+    /** Makes velocity negative */
+    public void reverseVelocity() {
+    	velocity = velocity.negative();
+    }
+    
     /**
      * Physics-Gravity for any 2 bodies with mass and distance
      * adds to netForce
      * <b> no Gauss gravity!!! </b>
      */
     public void gravity(Mass m) {
-    	if(this != m && !isColliding) {
+    	if(this != m /*&& !isColliding*/) {
     		final double weight = Window.G * mass * m.mass / Util.sq(position.distanceWith(m.position));
     		final double theta = position.angleWith(m.position);
     		netForce = netForce.addWith(Vector.createFromPolar(weight, theta));
@@ -228,10 +250,9 @@ public class Mass{
     
     /** Friction */
     public void airResitance() {
-    	Vector aR = velocity.scaleBy(0.0000000001).negative();
+    	Vector aR = velocity.scaleBy(0.000000000000000000000000001).negative();
     	if(!aR.isZero()) {
     		netForce = netForce.addWith(aR);
-//    		System.out.println(1);
     	}
     }
     

@@ -43,7 +43,7 @@ public class Window extends JFrame {
     /** Lag Constant */
     final static double LAG = 0.00000001;
     /** Gravitational Constant of the Universe increased by 10 */
-    final static double G = 6.67408e-12;
+    final static double G = 6.67408e-10;
     /** Friction Coefficient */
     final static double MU = 0.5;
     /** Gravity for Earth */
@@ -105,14 +105,13 @@ public class Window extends JFrame {
             //Moving
             masses.forEach(m -> {
             	m.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
-            	m.edgeBounce();
+            	//m.edgeBounce();
             	masses.forEach(m1 -> {
             		m1.testColliding(m);
             		//m1.collideWith(m);
             		m1.gravity(m);
             	});
-            	//Ummmmmm
-            	m.airResitance();
+//            	m.airResitance();
             	if(keysPressed.get(KeyBoard.LEFT)) {
             		m.grow();
             	}
@@ -122,12 +121,13 @@ public class Window extends JFrame {
             	if(keysPressed.get(KeyBoard.SPACE)) {
             		m.resetPosition();
             	}
+            	if(keysPressed.get(KeyBoard.F)) {
+            		m.reverseVelocity();
+            	}
             	if(mousePressed) {
             		m.freeze();
             	}
             	m.physics();
-            	
-                //System.out.println(m.getPosition().x);
             });
             if(keysPressed.get(KeyBoard.W)) {
             	Util.addDirectionOnce(Direction.UP, cDirs);
@@ -148,18 +148,16 @@ public class Window extends JFrame {
     /** Double buffering */
     @Override
     public void paint(Graphics g) {
-    	final int frameX =  (int)(this.getContentPane().getWidth() + PADDING_X + 1);
-        final int frameY =  (int)(this.getContentPane().getHeight() + PADDING_Y + 1);
+    	final int frameX = (int)(this.getContentPane().getWidth() + PADDING_X + 1);
+        final int frameY = (int)(this.getContentPane().getHeight() + PADDING_Y + 1);
         photo = createImage(frameX, frameY);
         dbg = photo.getGraphics();
         paintComponent(dbg);
         g.drawImage(photo, 0, 0, this);
     }
     
-    /**
-     * paint loop
-     * draws rectangles/people
-     */
+    /** paint loop
+     * draws rectangles/people */
     public void paintComponent(Graphics g) {   
         //Draws all the rectangles
     	masses.forEach(m -> {

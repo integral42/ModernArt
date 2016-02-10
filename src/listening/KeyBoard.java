@@ -68,6 +68,7 @@ public class KeyBoard implements KeyListener{
     public static final int A = 4;
     public static final int S = 5;
     public static final int D = 6;
+    public static final int F = 7;
     /** Adds keys to be tested to "keys" */
 	static {
 		keys.add(KeyEvent.VK_SPACE);
@@ -77,5 +78,6 @@ public class KeyBoard implements KeyListener{
 		keys.add(KeyEvent.VK_A);
 		keys.add(KeyEvent.VK_S);
 		keys.add(KeyEvent.VK_D);
+		keys.add(KeyEvent.VK_F);
 	}
 }
