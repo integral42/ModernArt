@@ -146,37 +146,54 @@ public class Mass{
         if(position.x < 0) {
         	velocity.x = -velocity.x;
             position.x = 0;
-            conserveMomentum();
+            conserveMomentum('x');
         } 
         if(position.y < 0) {
         	velocity.y = -velocity.y;
         	position.y = 0;
-            conserveMomentum();
+            conserveMomentum('y');
         }        
         if(position.x + width > 1) {
         	velocity.x = -velocity.x;
         	position.x = 1 - width;
-            conserveMomentum();
+            conserveMomentum('x');
         }
         if(position.y + height > 1) {
         	velocity.y = -velocity.y;
         	position.y = 1 - height;
-            conserveMomentum();
+            conserveMomentum('y');
         }
     }
     
     /** maintain conservation of momentum */
-    private void conserveMomentum() {
-    	final Vector deltaV = velocity.scaleBy(2).negative();
-    	final Vector impulse = deltaV.scaleBy(mass);
-    	double sigmaMass = 0;
-    	//Not sure why the other method (forEach) does not work
-    	for(Mass m : location.masses)
-    		sigmaMass += m.mass;
-    	final Vector averageImpulse = impulse.scaleBy(1 / sigmaMass);
-    	location.masses.forEach(m -> {
-    		m.velocity = m.velocity.addWith(averageImpulse);
-    	});
+    private void conserveMomentum(char key) {
+    	if(key == 'x') {
+    		final Vector deltaV = Vector.createFromPolar(velocity.x * -2, 0);
+        	final Vector impulse = deltaV.scaleBy(mass);
+        	double sigmaMass = 0;
+        	//Not sure why the other method (forEach) does not work
+        	for(Mass m : location.masses)
+        		sigmaMass += m.mass;
+        	final Vector averageImpulse = impulse.scaleBy(1 / sigmaMass);
+        	location.masses.forEach(m -> {
+        		m.velocity = m.velocity.addWith(averageImpulse);
+        	});
+    	}
+    	else if(key == 'y') {
+    		final Vector deltaV = Vector.createFromPolar(velocity.y * -2, 0);
+        	final Vector impulse = deltaV.scaleBy(mass);
+        	double sigmaMass = 0;
+        	//Not sure why the other method (forEach) does not work
+        	for(Mass m : location.masses)
+        		sigmaMass += m.mass;
+        	final Vector averageImpulse = impulse.scaleBy(1 / sigmaMass);
+        	location.masses.forEach(m -> {
+        		m.velocity = m.velocity.addWith(averageImpulse);
+        	});
+    	}
+    	else {
+    		System.err.println("Unsupported Key");
+    	}
     }
     
     /** Increases Width and Length by some small amount */

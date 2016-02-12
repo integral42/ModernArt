@@ -41,7 +41,7 @@ public class Window extends JFrame {
     	}
     }
     /** Lag Constant */
-    final static double LAG = 0.00000001;
+    final static double LAG = 0.000001;
     /** Gravitational Constant of the Universe increased by 10 */
     final static double G = 6.67408e-10;
     /** Friction Coefficient */
@@ -84,7 +84,7 @@ public class Window extends JFrame {
         k = new KeyBoard();
         addKeyListener(k);
         
-        new Mass(Vector.createFromRect(0.4, 0.6), 0.02, Util.randomColor(new Random()), 10, this);
+        //new Mass(Vector.createFromRect(0.4, 0.6), 0.02, Util.randomColor(new Random()), 10, this);
         //new Mass(Vector.createFromRect(0.6, 0.4), 0.02, Util.randomColor(new Random()), 2, this);
         new Controlled(Vector.createFromRect(0.2, 0.2), 0.02, Util.randomColor(new Random()), this);
         //Make lots of masses
@@ -105,10 +105,10 @@ public class Window extends JFrame {
             //Moving
             masses.forEach(m -> {
             	m.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
-            	//m.edgeBounce();
+            	m.edgeBounce();
             	masses.forEach(m1 -> {
             		m1.testColliding(m);
-            		//m1.collideWith(m);
+            		m1.collideWith(m);
             		m1.gravity(m);
             	});
 //            	m.airResitance();
@@ -176,5 +176,4 @@ public class Window extends JFrame {
     public void defineControlled(Controlled controlled) {
     	this.c = controlled;
     }
-    
 }
