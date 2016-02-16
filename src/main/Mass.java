@@ -167,33 +167,23 @@ public class Mass{
     
     /** maintain conservation of momentum */
     private void conserveMomentum(char key) {
-    	if(key == 'x') {
-    		final Vector deltaV = Vector.createFromPolar(velocity.x * -2, 0);
-        	final Vector impulse = deltaV.scaleBy(mass);
-        	double sigmaMass = 0;
-        	//Not sure why the other method (forEach) does not work
-        	for(Mass m : location.masses)
-        		sigmaMass += m.mass;
-        	final Vector averageImpulse = impulse.scaleBy(1 / sigmaMass);
-        	location.masses.forEach(m -> {
-        		m.velocity = m.velocity.addWith(averageImpulse);
-        	});
+    	final Vector deltaV;
+    	if(key == 'y') {
+    		deltaV = Vector.createFromPolar(velocity.x * -2, 0);
+    		System.out.println("X");
     	}
-    	else if(key == 'y') {
-    		final Vector deltaV = Vector.createFromPolar(velocity.y * -2, 0);
-        	final Vector impulse = deltaV.scaleBy(mass);
-        	double sigmaMass = 0;
-        	//Not sure why the other method (forEach) does not work
-        	for(Mass m : location.masses)
-        		sigmaMass += m.mass;
-        	final Vector averageImpulse = impulse.scaleBy(1 / sigmaMass);
-        	location.masses.forEach(m -> {
-        		m.velocity = m.velocity.addWith(averageImpulse);
-        	});
+    	else if(key == 'x') {
+    		deltaV = Vector.createFromPolar(velocity.y * -2, 0);
+    		System.out.println("Y");
     	}
     	else {
     		System.err.println("Unsupported Key");
+    		deltaV = new Vector();
     	}
+    	//final Vector impulse = deltaV.scaleBy(mass);
+    	//final Vector averageImpulse = impulse.scaleBy(1 / location.SIGMA_MASS);
+    	location.masses.forEach(m ->
+    		m.velocity = m.velocity.addWith(deltaV));
     }
     
     /** Increases Width and Length by some small amount */
@@ -302,6 +292,10 @@ public class Mass{
     /** Height Passer */
     public double getHeight() {
     	return height;
+    }
+    
+    public double getMass() {
+    	return mass;
     }
     
     //-------------Static-------------//

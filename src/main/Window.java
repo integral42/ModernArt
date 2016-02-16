@@ -41,13 +41,15 @@ public class Window extends JFrame {
     	}
     }
     /** Lag Constant */
-    final static double LAG = 0.000001;
+    final static double LAG = 0.0000001;
     /** Gravitational Constant of the Universe increased by 10 */
     final static double G = 6.67408e-10;
     /** Friction Coefficient */
     final static double MU = 0.5;
     /** Gravity for Earth */
     final static double g = 9.8e-20;
+    
+    final double SIGMA_MASS;
     
     //Double Buffering
     private Image photo;
@@ -85,14 +87,17 @@ public class Window extends JFrame {
         addKeyListener(k);
         
         //new Mass(Vector.createFromRect(0.4, 0.6), 0.02, Util.randomColor(new Random()), 10, this);
-        //new Mass(Vector.createFromRect(0.6, 0.4), 0.02, Util.randomColor(new Random()), 2, this);
+        new Mass(Vector.createFromRect(0.6, 0.4), 0.02, Util.randomColor(new Random()), this);
         new Controlled(Vector.createFromRect(0.2, 0.2), 0.02, Util.randomColor(new Random()), this);
-        //Make lots of masses
+//        //Make lots of masses
 //        for(double i = 0 ; i <= 1 ; i += 0.2) {
 //            new Mass(Vector.createFromRect(i, (Math.random()/ 5) + 0.4),
 //            		(Math.random() / 30) + 0.01, Util.randomColor(new Random()),
 //            		1, this);
 //        }
+        double sigmaMass = 0;
+        for(Mass m : masses) sigmaMass += m.getMass();
+        SIGMA_MASS = sigmaMass;
     }
     
     
@@ -105,10 +110,10 @@ public class Window extends JFrame {
             //Moving
             masses.forEach(m -> {
             	m.readjust(this.getContentPane().getWidth(), this.getContentPane().getHeight());
-            	m.edgeBounce();
+            	//m.edgeBounce();
             	masses.forEach(m1 -> {
-            		m1.testColliding(m);
-            		m1.collideWith(m);
+            		//m1.testColliding(m);
+            		//m1.collideWith(m);
             		m1.gravity(m);
             	});
 //            	m.airResitance();
